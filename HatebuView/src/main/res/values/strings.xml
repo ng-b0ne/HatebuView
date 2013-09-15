@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">HatebuView</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- カテゴリー -->
+    <string-array name="hatebu-category-key">
+        <item>headline</item>
+        <item>hotentry</item>
+        <item>social</item>
+        <item>economics</item>
+        <item>life</item>
+        <item>konwledge</item>
+        <item>it</item>
+        <item>entertainment</item>
+        <item>game</item>
+        <item>fun</item>
+        <item>video</item>
+    </string-array>
+    <string-array name="hatebu-category-key">
+        <item>ヘッドライト</item>
+        <item>総合</item>
+        <item>世の中</item>
+        <item>政治と経済</item>
+        <item>暮らし</item>
+        <item>学び</item>
+        <item>テクノロジー</item>
+        <item>エンタメ</item>
+        <item>アニメとゲーム</item>
+        <item>おもしろ</item>
+        <item>動画</item>
+    </string-array>
+    <string-array name="hatebu-category-rssurl">
+        <item>http://b.hatena.ne.jp/headline?mode=rss</item>
+        <item>http://b.hatena.ne.jp/hotentry?mode=rss</item>
+        <item>http://b.hatena.ne.jp/hotentry/social?mode=rss</item>
+        <item>http://b.hatena.ne.jp/hotentry/economics?mode=rss</item>
+        <item>http://b.hatena.ne.jp/hotentry/life?mode=rss</item>
+        <item>http://b.hatena.ne.jp/hotentry/konwledge?mode=rss</item>
+        <item>http://b.hatena.ne.jp/hotentry/it?mode=rss</item>
+        <item>http://b.hatena.ne.jp/hotentry/entertainment?mode=rss</item>
+        <item>http://b.hatena.ne.jp/hotentry/game?mode=rss</item>
+        <item>http://b.hatena.ne.jp/hotentry/fun?mode=rss</item>
+        <item>http://b.hatena.ne.jp/video?mode=rss</item>
+    </string-array>
+</resources>
