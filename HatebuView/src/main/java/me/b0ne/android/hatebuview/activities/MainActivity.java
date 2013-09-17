@@ -4,7 +4,9 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.util.Xml;
@@ -12,12 +14,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SpinnerAdapter;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.internal.ac;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -26,6 +31,7 @@ import java.util.ArrayList;
 
 import me.b0ne.android.hatebuview.R;
 import me.b0ne.android.hatebuview.adapters.DrawerMenuListAdapter;
+import me.b0ne.android.hatebuview.fragments.MainContentFragment;
 import me.b0ne.android.hatebuview.models.DrawerMenuItem;
 import me.b0ne.android.hatebuview.models.HateBook;
 import me.b0ne.android.hatebuview.models.RssItem;
@@ -91,7 +97,40 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void selectItem(int position) {
+        MainContentFragment mainContentFragment = new MainContentFragment();
+        DrawerMenuItem item = mDrawerListAdapter.getItem(position);
+        Bundle args = new Bundle();
+//        args.putString();
+//        args.putString();
 
+        mainContentFragment.setArguments(args);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.main_content_frame, mainContentFragment)
+                .commit();
+
+        mDrawerList.setItemChecked(position, true);
+        setTitle(item.getName());
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(item.getName());
+
+        if (position > 2) {
+            String[] spinnerItems = new String[]{"　人気　", "　新規　"};
+            ArrayAdapter<String> mSpinnerAdapter = new ArrayAdapter<String>(this,
+                    R.layout.navigation_mode_list_item, spinnerItems);
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+            actionBar.setListNavigationCallbacks(mSpinnerAdapter, new ActionBar.OnNavigationListener() {
+                @Override
+                public boolean onNavigationItemSelected(int position, long id) {
+                    return true;
+                }
+            });
+        } else {
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        }
+
+        mDrawerLayout.closeDrawers();
     }
 
     private Response.Listener<ArrayList<RssItem>> responseListener = new Response.Listener<ArrayList<RssItem>>() {
