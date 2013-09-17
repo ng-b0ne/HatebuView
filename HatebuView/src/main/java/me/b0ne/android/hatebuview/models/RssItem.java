@@ -7,6 +7,10 @@ public class RssItem {
     private String title;
     private String text;
     private String link;
+    private String date;
+    private String category;
+    private int bookmarkCount;
+    private int itemCount;
 
 
     public void setTitle(String _title) {
@@ -14,7 +18,7 @@ public class RssItem {
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public void setText(String _text) {
@@ -22,7 +26,7 @@ public class RssItem {
     }
 
     public String getText() {
-        return text;
+        return this.text;
     }
 
     public void setLink(String _link) {
@@ -30,6 +34,38 @@ public class RssItem {
     }
 
     public String getLink() {
-        return link;
+        return this.link;
+    }
+
+    public void setDate(String _date) {
+        this.date = _date;
+    }
+
+    public String getDate() {
+        return this.date;
+    }
+
+    public void setCategory(String _category) {
+        this.category = _category;
+    }
+
+    public String getCategory() {
+        return this.category;
+    }
+
+    public void setBookmarkCount(int _count) {
+        this.bookmarkCount = _count;
+    }
+
+    public int getBookmarkCount() {
+        return this.bookmarkCount;
+    }
+
+    public void setItemCount(int _count) {
+        this.itemCount = _count;
+    }
+
+    public int getItemCount() {
+        return this.itemCount;
     }
 }

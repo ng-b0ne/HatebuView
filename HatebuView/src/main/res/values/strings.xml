@@ -4,9 +4,13 @@
     <string name="app_name">HatebuView</string>
     <string name="action_settings">Settings</string>
 
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
     <!-- カテゴリー -->
-    <string-array name="hatebu-category-key">
+    <string-array name="hatebu_category_key">
         <item>headline</item>
+        <item>entrylist</item>
         <item>hotentry</item>
         <item>social</item>
         <item>economics</item>
@@ -18,8 +22,9 @@
         <item>fun</item>
         <item>video</item>
     </string-array>
-    <string-array name="hatebu-category-key">
+    <string-array name="hatebu_category_name">
         <item>ヘッドライト</item>
+        <item>新規エントリー</item>
         <item>総合</item>
         <item>世の中</item>
         <item>政治と経済</item>
@@ -31,8 +36,9 @@
         <item>おもしろ</item>
         <item>動画</item>
     </string-array>
-    <string-array name="hatebu-category-rssurl">
-        <item>http://b.hatena.ne.jp/headline?mode=rss</item>
+    <string-array name="hatebu_category_rssurl">
+        <item></item>
+        <item>http://b.hatena.ne.jp/entrylist?mode=rss</item>
         <item>http://b.hatena.ne.jp/hotentry?mode=rss</item>
         <item>http://b.hatena.ne.jp/hotentry/social?mode=rss</item>
         <item>http://b.hatena.ne.jp/hotentry/economics?mode=rss</item>

@@ -2,7 +2,6 @@ package me.b0ne.android.hatebuview.models;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by bone on 13/09/15.
