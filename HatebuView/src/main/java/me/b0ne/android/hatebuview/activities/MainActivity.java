@@ -31,11 +31,13 @@ import java.util.ArrayList;
 
 import me.b0ne.android.hatebuview.R;
 import me.b0ne.android.hatebuview.adapters.DrawerMenuListAdapter;
+import me.b0ne.android.hatebuview.fragments.BookmarkListFragment;
 import me.b0ne.android.hatebuview.fragments.MainContentFragment;
 import me.b0ne.android.hatebuview.models.DrawerMenuItem;
 import me.b0ne.android.hatebuview.models.HateBook;
 import me.b0ne.android.hatebuview.models.RssItem;
 import me.b0ne.android.hatebuview.models.RssRequest;
+import me.b0ne.android.hatebuview.models.Util;
 
 public class MainActivity extends ActionBarActivity {
     public DrawerLayout mDrawerLayout;
@@ -44,6 +46,8 @@ public class MainActivity extends ActionBarActivity {
     private DrawerMenuListAdapter mDrawerListAdapter;
 
     private static RequestQueue mQueue;
+
+    private String mRssUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +59,15 @@ public class MainActivity extends ActionBarActivity {
 
         mDrawerList = (ListView)findViewById(R.id.left_drawer);
         mDrawerListAdapter = new DrawerMenuListAdapter(this);
-        String[] drawerItemList = getResources().getStringArray(R.array.hatebu_category_name);
+        String[] bkNameList = getResources().getStringArray(R.array.hatebu_category_name);
+        String[] bkUrlList = getResources().getStringArray(R.array.hatebu_category_rssurl);
+        String[] bkCategoryKey = getResources().getStringArray(R.array.hatebu_category_key);
         DrawerMenuItem item;
-        for (int i = 0; i < drawerItemList.length; i++) {
+        for (int i = 0; i < bkNameList.length; i++) {
             item = new DrawerMenuItem();
-            item.setName(drawerItemList[i]);
+            item.setName(bkNameList[i]);
+            item.setKey(bkCategoryKey[i]);
+            item.setUrl(bkUrlList[i]);
             mDrawerListAdapter.add(item);
         }
         mDrawerList.setAdapter(mDrawerListAdapter);
@@ -87,28 +95,13 @@ public class MainActivity extends ActionBarActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         if (savedInstanceState == null) {
-            selectItem(0);
+            selectItem(2);
         }
-
-        mQueue = Volley.newRequestQueue(this);
-        String rssUrl = "http://b.hatena.ne.jp/hotentry?mode=rss";
-        HateBook.getRss(this, rssUrl, responseListener);
 
     }
 
     private void selectItem(int position) {
-        MainContentFragment mainContentFragment = new MainContentFragment();
         DrawerMenuItem item = mDrawerListAdapter.getItem(position);
-        Bundle args = new Bundle();
-//        args.putString();
-//        args.putString();
-
-        mainContentFragment.setArguments(args);
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.main_content_frame, mainContentFragment)
-                .commit();
 
         mDrawerList.setItemChecked(position, true);
         setTitle(item.getName());
@@ -130,25 +123,29 @@ public class MainActivity extends ActionBarActivity {
             actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         }
 
+        Bundle args = new Bundle();
+        if (position > 0) {
+            BookmarkListFragment bookmarkListFragment = new BookmarkListFragment();
+            args.putString(Util.KEY_BK_RSS_URL, item.getUrl());
+            args.putString(Util.KEY_BK_CATEGORY_NAME, item.getName());
+            args.putString(Util.KEY_BK_CATEGORY_KEY, item.getKey());
+            args.putInt("position", position);
+            bookmarkListFragment.setArguments(args);
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.main_content_frame, bookmarkListFragment)
+                    .commit();
+        } else {
+            MainContentFragment mainContentFragment = new MainContentFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.main_content_frame, mainContentFragment)
+                    .commit();
+        }
+
         mDrawerLayout.closeDrawers();
     }
-
-    private Response.Listener<ArrayList<RssItem>> responseListener = new Response.Listener<ArrayList<RssItem>>() {
-        @Override
-        public void onResponse(ArrayList<RssItem> response) {
-            if (response.size() < 1) return;
-
-            for (int i = 0; i<response.size(); i++) {
-                RssItem item = response.get(i);
-                Log.v("TEST", "= " + item.getTitle());
-                Log.v("TEST", "= " + item.getCategory());
-                Log.v("TEST", "= " + item.getDate());
-                Log.v("TEST", "= " + item.getBookmarkCount());
-                Log.v("TEST", "= " + item.getLink());
-            }
-        }
-    };
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

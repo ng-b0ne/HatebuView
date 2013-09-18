@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class Util {
 
-    public ArrayList<RssItem> parseRssToItem(InputStream inputStream){
-        return null;
-    }
+    public static final String KEY_BK_RSS_URL = "rss_url";
+    public static final String KEY_BK_CATEGORY_KEY = "category_key";
+    public static final String KEY_BK_CATEGORY_NAME = "category_name";
 }
