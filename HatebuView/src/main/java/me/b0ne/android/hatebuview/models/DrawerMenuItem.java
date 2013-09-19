@@ -6,7 +6,8 @@ package me.b0ne.android.hatebuview.models;
 public class DrawerMenuItem {
     private String key;
     private String name;
-    private String url;
+    private String hotentryUrl;
+    private String entrylistUrl;
 
     public void setKey(String _key) {
         this.key = _key;
@@ -24,11 +25,19 @@ public class DrawerMenuItem {
         return name;
     }
 
-    public void setUrl(String _url) {
-        this.url = _url;
+    public void setHotentryUrl(String _url) {
+        this.hotentryUrl = _url;
     }
 
-    public String getUrl() {
-        return this.url;
+    public String getHotentryUrl() {
+        return this.hotentryUrl;
+    }
+
+    public void setEntrylistUrl(String _url) {
+        this.entrylistUrl = _url;
+    }
+
+    public String getEntrylistUrl() {
+        return this.entrylistUrl;
     }
 }

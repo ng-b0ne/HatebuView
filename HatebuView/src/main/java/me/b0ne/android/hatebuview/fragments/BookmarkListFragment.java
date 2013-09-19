@@ -41,10 +41,8 @@ public class BookmarkListFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         mContext = getActivity().getApplicationContext();
         String rssUrl = getArguments().getString(Util.KEY_BK_RSS_URL);
-        Log.v("TEST", rssUrl);
         HateBook.getRss(mContext, rssUrl, rssListener);
 
-        //setListAdapter(mAdapter);
     }
 
     private Response.Listener<ArrayList<RssItem>> rssListener = new Response.Listener<ArrayList<RssItem>>(){

@@ -2,41 +2,25 @@ package me.b0ne.android.hatebuview.activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.util.Xml;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SpinnerAdapter;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.toolbox.Volley;
-import com.google.android.gms.internal.ac;
-
-import org.xmlpull.v1.XmlPullParser;
-
-import java.io.InputStream;
-import java.util.ArrayList;
 
 import me.b0ne.android.hatebuview.R;
 import me.b0ne.android.hatebuview.adapters.DrawerMenuListAdapter;
 import me.b0ne.android.hatebuview.fragments.BookmarkListFragment;
 import me.b0ne.android.hatebuview.fragments.MainContentFragment;
 import me.b0ne.android.hatebuview.models.DrawerMenuItem;
-import me.b0ne.android.hatebuview.models.HateBook;
-import me.b0ne.android.hatebuview.models.RssItem;
-import me.b0ne.android.hatebuview.models.RssRequest;
 import me.b0ne.android.hatebuview.models.Util;
 
 public class MainActivity extends ActionBarActivity {
@@ -60,14 +44,16 @@ public class MainActivity extends ActionBarActivity {
         mDrawerList = (ListView)findViewById(R.id.left_drawer);
         mDrawerListAdapter = new DrawerMenuListAdapter(this);
         String[] bkNameList = getResources().getStringArray(R.array.hatebu_category_name);
-        String[] bkUrlList = getResources().getStringArray(R.array.hatebu_category_hotentry_rssurl);
+        String[] bkHotentryUrlList = getResources().getStringArray(R.array.hatebu_category_hotentry_rssurl);
+        String[] bkEntrylistUrlList = getResources().getStringArray(R.array.hatebu_category_entrylist_rssurl);
         String[] bkCategoryKey = getResources().getStringArray(R.array.hatebu_category_key);
         DrawerMenuItem item;
         for (int i = 0; i < bkNameList.length; i++) {
             item = new DrawerMenuItem();
             item.setName(bkNameList[i]);
             item.setKey(bkCategoryKey[i]);
-            item.setUrl(bkUrlList[i]);
+            item.setHotentryUrl(bkHotentryUrlList[i]);
+            item.setEntrylistUrl(bkEntrylistUrlList[i]);
             mDrawerListAdapter.add(item);
         }
         mDrawerList.setAdapter(mDrawerListAdapter);
@@ -95,13 +81,13 @@ public class MainActivity extends ActionBarActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         if (savedInstanceState == null) {
-            selectItem(2);
+            selectItem(0);
         }
 
     }
 
-    private void selectItem(int position) {
-        DrawerMenuItem item = mDrawerListAdapter.getItem(position);
+    private void selectItem(final int position) {
+        final DrawerMenuItem item = mDrawerListAdapter.getItem(position);
 
         mDrawerList.setItemChecked(position, true);
         setTitle(item.getName());
@@ -115,7 +101,10 @@ public class MainActivity extends ActionBarActivity {
             actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
             actionBar.setListNavigationCallbacks(mSpinnerAdapter, new ActionBar.OnNavigationListener() {
                 @Override
-                public boolean onNavigationItemSelected(int position, long id) {
+                public boolean onNavigationItemSelected(int naviPosition, long id) {
+                    String type = (naviPosition == 1) ? Util.CATEGORY_TYPE_ENTRYLIST
+                            : Util.CATEGORY_TYPE_HOTENTRY;
+                    replaceBookmarkFragment(item, type);
                     return true;
                 }
             });
@@ -123,19 +112,8 @@ public class MainActivity extends ActionBarActivity {
             actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         }
 
-        Bundle args = new Bundle();
         if (position > 0) {
-            BookmarkListFragment bookmarkListFragment = new BookmarkListFragment();
-            args.putString(Util.KEY_BK_RSS_URL, item.getUrl());
-            args.putString(Util.KEY_BK_CATEGORY_NAME, item.getName());
-            args.putString(Util.KEY_BK_CATEGORY_KEY, item.getKey());
-            args.putInt("position", position);
-            bookmarkListFragment.setArguments(args);
-
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.main_content_frame, bookmarkListFragment)
-                    .commit();
+            replaceBookmarkFragment(item, null);
         } else {
             MainContentFragment mainContentFragment = new MainContentFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -145,6 +123,28 @@ public class MainActivity extends ActionBarActivity {
         }
 
         mDrawerLayout.closeDrawers();
+    }
+
+    private void replaceBookmarkFragment(DrawerMenuItem item, String type) {
+        if (type == null || type.equals("")) {
+            type = Util.CATEGORY_TYPE_HOTENTRY;
+        }
+        Bundle args = new Bundle();
+        BookmarkListFragment bookmarkListFragment = new BookmarkListFragment();
+        if (type.endsWith(Util.CATEGORY_TYPE_HOTENTRY)) {
+            args.putString(Util.KEY_BK_RSS_URL, item.getHotentryUrl());
+        } else {
+            args.putString(Util.KEY_BK_RSS_URL, item.getEntrylistUrl());
+        }
+        args.putString(Util.KEY_BK_CATEGORY_NAME, item.getName());
+        args.putString(Util.KEY_BK_CATEGORY_KEY, item.getKey());
+        args.putString(Util.KEY_BK_CATEGORY_TYPE, type);
+        bookmarkListFragment.setArguments(args);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.main_content_frame, bookmarkListFragment)
+                .commit();
     }
 
     @Override

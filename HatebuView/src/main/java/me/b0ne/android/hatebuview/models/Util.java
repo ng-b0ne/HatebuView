@@ -11,4 +11,9 @@ public class Util {
     public static final String KEY_BK_RSS_URL = "rss_url";
     public static final String KEY_BK_CATEGORY_KEY = "category_key";
     public static final String KEY_BK_CATEGORY_NAME = "category_name";
+    public static final String KEY_BK_CATEGORY_TYPE = "category_type";
+
+    public static final String CATEGORY_TYPE_HOTENTRY = "hotentry";
+    public static final String CATEGORY_TYPE_ENTRYLIST = "entrylist";
+
 }
