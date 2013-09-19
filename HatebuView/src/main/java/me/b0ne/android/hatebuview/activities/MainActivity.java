@@ -60,7 +60,7 @@ public class MainActivity extends ActionBarActivity {
         mDrawerList = (ListView)findViewById(R.id.left_drawer);
         mDrawerListAdapter = new DrawerMenuListAdapter(this);
         String[] bkNameList = getResources().getStringArray(R.array.hatebu_category_name);
-        String[] bkUrlList = getResources().getStringArray(R.array.hatebu_category_rssurl);
+        String[] bkUrlList = getResources().getStringArray(R.array.hatebu_category_hotentry_rssurl);
         String[] bkCategoryKey = getResources().getStringArray(R.array.hatebu_category_key);
         DrawerMenuItem item;
         for (int i = 0; i < bkNameList.length; i++) {

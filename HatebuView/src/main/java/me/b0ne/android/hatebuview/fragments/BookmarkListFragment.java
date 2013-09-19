@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.LinearLayout;
 
 import com.android.volley.Response;
 
@@ -26,10 +27,12 @@ public class BookmarkListFragment extends ListFragment {
 
     private Context mContext;
     private BookmarkListAdapter mAdapter;
+    private LinearLayout ProgressLayout;
 
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bookmark_list, container, false);
+        ProgressLayout = (LinearLayout)view.findViewById(R.id.progress_layout);
         return view;
     }
 
@@ -48,6 +51,7 @@ public class BookmarkListFragment extends ListFragment {
         @Override
         public void onResponse(ArrayList<RssItem> response) {
             if (response.size() < 1) return;
+            ProgressLayout.setVisibility(View.GONE);
 
             mAdapter = new BookmarkListAdapter(mContext, response);
             setListAdapter(mAdapter);

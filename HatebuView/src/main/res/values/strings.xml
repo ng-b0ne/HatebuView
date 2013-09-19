@@ -10,8 +10,8 @@
     <!-- カテゴリー -->
     <string-array name="hatebu_category_key">
         <item>headline</item>
-        <item>entrylist</item>
         <item>hotentry</item>
+        <item>entrylist</item>
         <item>social</item>
         <item>economics</item>
         <item>life</item>
@@ -24,8 +24,8 @@
     </string-array>
     <string-array name="hatebu_category_name">
         <item>ヘッドライト</item>
-        <item>新規エントリー</item>
         <item>総合</item>
+        <item>新規エントリー</item>
         <item>世の中</item>
         <item>政治と経済</item>
         <item>暮らし</item>
@@ -37,10 +37,10 @@
         <!--<item>動画</item>-->
     </string-array>
     <!--コメントの項目は、データがとれないから動画はなし！-->
-    <string-array name="hatebu_category_rssurl">
+    <string-array name="hatebu_category_hotentry_rssurl">
         <item></item>
-        <item>http://b.hatena.ne.jp/entrylist?mode=rss</item>
         <item>http://b.hatena.ne.jp/hotentry?mode=rss</item>
+        <item>http://b.hatena.ne.jp/entrylist?mode=rss</item>
         <item>http://b.hatena.ne.jp/entrylist/social?sort=hot&amp;threshold=20&amp;mode=rss</item>
         <item>http://b.hatena.ne.jp/entrylist/economics?sort=hot&amp;threshold=20&amp;mode=rss</item>
         <item>http://b.hatena.ne.jp/entrylist/life?sort=hot&amp;threshold=20&amp;mode=rss</item>
@@ -49,6 +49,20 @@
         <item>http://b.hatena.ne.jp/entrylist/entertainment?sort=hot&amp;threshold=20&amp;mode=rss</item>
         <item>http://b.hatena.ne.jp/entrylist/game?sort=hot&amp;threshold=20&amp;mode=rss</item>
         <item>http://b.hatena.ne.jp/entrylist/fun?sort=hot&amp;threshold=20&amp;mode=rss</item>
+        <!--<item>http://b.hatena.ne.jp/entrylist/video?sort=hot&amp;threshold=20&amp;mode=rss</item>-->
+    </string-array>
+    <string-array name="hatebu_category_entrylist_rssurl">
+        <item></item>
+        <item>http://b.hatena.ne.jp/hotentry?mode=rss</item>
+        <item>http://b.hatena.ne.jp/entrylist?mode=rss</item>
+        <item>http://b.hatena.ne.jp/entrylist/social?mode=rss</item>
+        <item>http://b.hatena.ne.jp/entrylist/economics?mode=rss</item>
+        <item>http://b.hatena.ne.jp/entrylist/life?mode=rss</item>
+        <!--<item>http://b.hatena.ne.jp/entrylist/konwledge?sort=hot&amp;threshold=20&amp;mode=rss</item>-->
+        <item>http://b.hatena.ne.jp/entrylist/it?mode=rss</item>
+        <item>http://b.hatena.ne.jp/entrylist/entertainment?mode=rss</item>
+        <item>http://b.hatena.ne.jp/entrylist/game?mode=rss</item>
+        <item>http://b.hatena.ne.jp/entrylist/fun?mode=rss</item>
         <!--<item>http://b.hatena.ne.jp/entrylist/video?sort=hot&amp;threshold=20&amp;mode=rss</item>-->
     </string-array>
 </resources>
