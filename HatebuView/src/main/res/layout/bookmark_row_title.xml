@@ -1,20 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingRight="8dp"
+    android:paddingLeft="8dp"
     >
 
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/site_favicon"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="6dp"
+        android:src="@drawable/ic_launcher"
+        />
     <TextView
         android:id="@+id/title"
+        android:layout_toRightOf="@+id/site_favicon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:textSize="18sp"
         android:textColor="#212121"
+        android:text="タイトル タイトル タイトル タイトル タイトル タイトル タイトル タイトル タイトル タイトル タイトル タイトル タイトル "
         />
-</LinearLayout>
+    <TextView
+        android:id="@+id/datetime"
+        android:layout_below="@+id/title"
+        android:layout_toRightOf="@+id/site_favicon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="8dp"
+        android:textSize="14sp"
+        android:textColor="#C2C2C2"
+        android:text="2013/09/19 20:00"
+        />
+    <TextView
+        android:id="@+id/bookmark_count"
+        android:layout_below="@+id/title"
+        android:layout_toRightOf="@+id/datetime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="#EE6363"
+        android:textStyle="bold"
+        android:text="20 user"
+        />
+</RelativeLayout>

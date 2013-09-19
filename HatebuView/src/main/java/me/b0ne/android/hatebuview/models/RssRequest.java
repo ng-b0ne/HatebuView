@@ -55,6 +55,8 @@ public class RssRequest extends Request<ArrayList<RssItem>> {
                                 currentItem.setCategory(parser.nextText());
                             } else if (tag.equals("bookmarkcount")) {
                                 currentItem.setBookmarkCount(Integer.valueOf(parser.nextText()));
+                            } else if (tag.equals("encoded")) {
+                                currentItem.setContent(parser.nextText());
                             }
 
                         }

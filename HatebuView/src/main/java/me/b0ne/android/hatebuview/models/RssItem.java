@@ -1,11 +1,19 @@
 package me.b0ne.android.hatebuview.models;
 
+import android.util.Log;
+
+import com.google.android.gms.internal.fa;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by bone on 13/09/15.
  */
 public class RssItem {
     private String title;
     private String text;
+    private String content;
     private String link;
     private String date;
     private String category;
@@ -27,6 +35,14 @@ public class RssItem {
 
     public String getText() {
         return this.text;
+    }
+
+    public void setContent(String _content) {
+        this.content = _content;
+    }
+
+    public String getContent() {
+        return this.content;
     }
 
     public void setLink(String _link) {
@@ -67,5 +83,31 @@ public class RssItem {
 
     public int getItemCount() {
         return this.itemCount;
+    }
+
+    public String getFaviconUrl() {
+        String favicon = null;
+        String content = this.content;
+        Pattern p = Pattern.compile("<img.+?src=\"((.*)favicon.*?)\".*? />", Pattern.MULTILINE);
+        Matcher m = p.matcher(content);
+        while (m.find()) {
+            for (int i = 0; i < m.groupCount(); i++) {
+                favicon = m.group(1);
+            }
+        }
+        return favicon;
+    }
+
+    public String getContentImgUrl() {
+        String imgUrl = "";
+        String content = this.content;
+        Pattern p = Pattern.compile("<img .* src=\"((.*)entryimage.*?)\".*? />", Pattern.MULTILINE);
+        Matcher m = p.matcher(content);
+        while (m.find()) {
+            for (int i = 0; i < m.groupCount(); i++) {
+                imgUrl = m.group(1);
+            }
+        }
+        return imgUrl;
     }
 }
