@@ -19,6 +19,7 @@ public class RssItem {
     private String category;
     private int bookmarkCount;
     private int itemCount;
+    private int rowType = 0;
 
 
     public void setTitle(String _title) {
@@ -85,6 +86,14 @@ public class RssItem {
         return this.itemCount;
     }
 
+    public void setRowType(int _type) {
+        this.rowType = _type;
+    }
+
+    public int getRowType() {
+        return this.rowType;
+    }
+
     public String getFaviconUrl() {
         String favicon = null;
         String content = this.content;
@@ -110,4 +119,5 @@ public class RssItem {
         }
         return imgUrl;
     }
+
 }

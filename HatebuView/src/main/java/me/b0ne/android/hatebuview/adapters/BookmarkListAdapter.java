@@ -1,10 +1,13 @@
 package me.b0ne.android.hatebuview.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
@@ -40,7 +43,7 @@ public class BookmarkListAdapter extends ArrayAdapter<RssItem> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if (view == null) {
             view = LayoutInflater.from(getContext()).inflate(R.layout.bookmark_row_title, null);
@@ -48,11 +51,11 @@ public class BookmarkListAdapter extends ArrayAdapter<RssItem> {
 //            view = LayoutInflater.from(getContext()).inflate(R.layout.bookmark_row_full, null);
         }
 
-        RssItem item = getItem(position);
+        final RssItem item = getItem(position);
         TextView titleView = (TextView)view.findViewById(R.id.title);
         TextView dateView = (TextView)view.findViewById(R.id.datetime);
         TextView bkCountView = (TextView)view.findViewById(R.id.bookmark_count);
-        Log.v("TEST", item.getContentImgUrl());
+        // Log.v("TEST", item.getContentImgUrl());
 
         titleView.setText(item.getTitle());
         dateView.setText(item.getDate());
