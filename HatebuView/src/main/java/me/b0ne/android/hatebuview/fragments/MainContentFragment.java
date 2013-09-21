@@ -1,21 +1,25 @@
 package me.b0ne.android.hatebuview.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import com.android.volley.Response;
 
 import java.util.ArrayList;
 
 import me.b0ne.android.hatebuview.R;
+import me.b0ne.android.hatebuview.activities.BkWebViewActivity;
 import me.b0ne.android.hatebuview.adapters.HeadLineListAdapter;
 import me.b0ne.android.hatebuview.models.HateBook;
 import me.b0ne.android.hatebuview.models.RssItem;
+import me.b0ne.android.hatebuview.models.Util;
 
 /**
  * Created by bone on 13/09/17.
@@ -92,4 +96,15 @@ public class MainContentFragment extends ListFragment {
             mAdapter.notifyDataSetChanged();
         }
     };
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        RssItem item = mAdapter.getItem(position);
+        int rowType = item.getRowType();
+        if (rowType == 1 || rowType == 2) return;
+
+        Intent intent = new Intent(mContext, BkWebViewActivity.class);
+        intent.putExtra(Util.BK_WEBVIEW_URL, item.getLink());
+        startActivity(intent);
+    }
 }
