@@ -55,6 +55,8 @@ public class RssItem {
     }
 
     public void setDate(String _date) {
+        _date = _date.replace("+09:00", "");
+        _date = _date.replace("T", " ");
         this.date = _date;
     }
 

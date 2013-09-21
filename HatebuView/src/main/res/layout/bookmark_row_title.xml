@@ -37,13 +37,13 @@
         android:layout_height="wrap_content"
         android:paddingRight="8dp"
         android:textSize="14sp"
-        android:textColor="#C2C2C2"
+        android:textColor="#919191"
         android:text="2013/09/19 20:00"
         />
     <TextView
         android:id="@+id/bookmark_count"
         android:layout_below="@+id/title"
-        android:layout_toRightOf="@+id/datetime"
+        android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"

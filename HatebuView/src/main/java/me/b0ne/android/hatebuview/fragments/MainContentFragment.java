@@ -35,7 +35,6 @@ public class MainContentFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bookmark_list, container, false);
         ProgressLayout = (LinearLayout)view.findViewById(R.id.progress_layout);
-        ProgressLayout.setVisibility(View.GONE);
         return view;
     }
 
@@ -46,27 +45,25 @@ public class MainContentFragment extends ListFragment {
         mContext = getActivity().getApplicationContext();
         mAdapter = new HeadLineListAdapter(mContext);
 
-        // add loading view
-        loadingItem = new RssItem();
-        loadingItem.setRowType(2);
-        mAdapter.add(loadingItem);
-
         categoryNameList = getResources().getStringArray(R.array.hatebu_category_name);
         categoryHotentryRssList = getResources().getStringArray(R.array.hatebu_category_hotentry_rssurl);
 
         getRssData(1);
-        setListAdapter(mAdapter);
     }
 
     private void getRssData(int position) {
         mPosition = position;
+
         HateBook.getRss(mContext, categoryHotentryRssList[position], rssListener);
     }
 
     private Response.Listener<ArrayList<RssItem>> rssListener = new Response.Listener<ArrayList<RssItem>>(){
         @Override
         public void onResponse(ArrayList<RssItem> response) {
-            mAdapter.remove(loadingItem);
+            if (mPosition > 1) {
+                mAdapter.remove(loadingItem);
+            }
+
             RssItem item = new RssItem();
             item.setRowType(1);
             item.setCategory(categoryNameList[mPosition]);
@@ -78,7 +75,17 @@ public class MainContentFragment extends ListFragment {
             }
 
             if (mPosition < (categoryNameList.length - 1)) {
-                mAdapter.add(loadingItem);
+                if (mPosition == 1) {
+                    ProgressLayout.setVisibility(View.GONE);
+                    // add loading view
+                    loadingItem = new RssItem();
+                    loadingItem.setRowType(2);
+                    mAdapter.add(loadingItem);
+                    setListAdapter(mAdapter);
+                } else {
+                    mAdapter.add(loadingItem);
+                }
+
                 mPosition++;
                 getRssData(mPosition);
             }
