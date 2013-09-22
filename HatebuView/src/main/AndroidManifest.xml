@@ -30,6 +30,9 @@
         <activity
             android:name=".activities.BkWebViewActivity"
             />
+        <activity
+            android:name=".activities.AppPreferenceActivity"
+            />
     </application>
 
 </manifest>

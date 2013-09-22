@@ -19,6 +19,7 @@ import com.android.volley.Response;
 import java.util.ArrayList;
 
 import me.b0ne.android.hatebuview.R;
+import me.b0ne.android.hatebuview.activities.BkWebViewActivity;
 import me.b0ne.android.hatebuview.adapters.BookmarkListAdapter;
 import me.b0ne.android.hatebuview.models.HateBook;
 import me.b0ne.android.hatebuview.models.RssItem;
@@ -63,8 +64,8 @@ public class BookmarkListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         RssItem item = mAdapter.getItem(position);
-        Uri uri = Uri.parse(item.getLink());
-        Intent i = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(i);
+        Intent intent = new Intent(mContext, BkWebViewActivity.class);
+        intent.putExtra(Util.BK_WEBVIEW_URL, item.getLink());
+        startActivity(intent);
     }
 }

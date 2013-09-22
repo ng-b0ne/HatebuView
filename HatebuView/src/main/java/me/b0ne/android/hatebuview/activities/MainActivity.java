@@ -1,5 +1,6 @@
 package me.b0ne.android.hatebuview.activities;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -12,9 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
-
-import com.android.volley.RequestQueue;
 
 import me.b0ne.android.hatebuview.R;
 import me.b0ne.android.hatebuview.adapters.DrawerMenuListAdapter;
@@ -28,10 +28,7 @@ public class MainActivity extends ActionBarActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private ListView mDrawerList;
     private DrawerMenuListAdapter mDrawerListAdapter;
-
-    private static RequestQueue mQueue;
-
-    private String mRssUrl;
+    private Button appSettingBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +37,8 @@ public class MainActivity extends ActionBarActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        appSettingBtn = (Button)findViewById(R.id.app_setting);
 
         mDrawerList = (ListView)findViewById(R.id.left_drawer);
         mDrawerListAdapter = new DrawerMenuListAdapter(this);
@@ -79,6 +78,15 @@ public class MainActivity extends ActionBarActivity {
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        appSettingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDrawerLayout.closeDrawers();
+                Intent intent = new Intent(getApplicationContext(), AppPreferenceActivity.class);
+                startActivity(intent);
+            }
+        });
 
         if (savedInstanceState == null) {
             selectItem(0);

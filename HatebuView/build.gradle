@@ -20,5 +20,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:18.0.+'
     compile 'com.google.android.gms:play-services:3.2.+'
     compile files('libs/libGoogleAnalyticsV2.jar')
+    compile files('libs/gson-2.2.4.jar')
     compile project(":libraries:volley")
 }
