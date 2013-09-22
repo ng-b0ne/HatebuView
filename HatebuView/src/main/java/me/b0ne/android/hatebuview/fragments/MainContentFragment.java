@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +12,17 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.android.volley.Response;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 
 import me.b0ne.android.hatebuview.R;
 import me.b0ne.android.hatebuview.activities.BkWebViewActivity;
 import me.b0ne.android.hatebuview.adapters.HeadLineListAdapter;
+import me.b0ne.android.hatebuview.models.AppData;
 import me.b0ne.android.hatebuview.models.HateBook;
 import me.b0ne.android.hatebuview.models.RssItem;
 import me.b0ne.android.hatebuview.models.Util;
@@ -33,7 +39,10 @@ public class MainContentFragment extends ListFragment {
     private int mPosition;
     private String[] categoryNameList;
     private String[] categoryHotentryRssList;
-    private RssItem loadingItem;
+    private String[] categoryKeyList;
+    private JsonObject loadingItem;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,60 +60,82 @@ public class MainContentFragment extends ListFragment {
 
         categoryNameList = getResources().getStringArray(R.array.hatebu_category_name);
         categoryHotentryRssList = getResources().getStringArray(R.array.hatebu_category_hotentry_rssurl);
+        categoryKeyList = getResources().getStringArray(R.array.hatebu_category_key);
 
         getRssData(1);
     }
 
     private void getRssData(int position) {
         mPosition = position;
+        String rssCacheKey = categoryKeyList[position];
 
-        HateBook.getRss(mContext, categoryHotentryRssList[position], rssListener);
+        if (AppData.get(mContext, rssCacheKey) != null) {
+            JsonParser parser = new JsonParser();
+            setDataToList(parser.parse(AppData.get(mContext, rssCacheKey)).getAsJsonArray());
+        } else {
+            HateBook.getRss(mContext, categoryHotentryRssList[position], rssListener);
+        }
+    }
+
+    // set data to list view
+    private void setDataToList(JsonArray jsonArray) {
+        if (mPosition > 1) {
+            mAdapter.remove(loadingItem);
+        }
+
+        // add category bar name
+        RssItem item = new RssItem();
+        item.setRowType(1);
+        item.setCategory(categoryNameList[mPosition]);
+        mAdapter.add(item.toJsonObject());
+
+        // add rss content to row
+        for (int i=0; i<3; i++) {
+            JsonObject jsonObj = jsonArray.get(i).getAsJsonObject();
+            mAdapter.add(jsonObj);
+        }
+
+        if (mPosition < (categoryNameList.length - 1)) {
+            if (mPosition == 1) {
+                ProgressLayout.setVisibility(View.GONE);
+                // add loading view
+                RssItem rssloadingItem = new RssItem();
+                rssloadingItem.setRowType(2);
+                loadingItem = rssloadingItem.toJsonObject();
+                mAdapter.add(loadingItem);
+                setListAdapter(mAdapter);
+
+            } else {
+                mAdapter.add(loadingItem);
+            }
+
+            mPosition++;
+            getRssData(mPosition);
+        }
+        mAdapter.notifyDataSetChanged();
     }
 
     private Response.Listener<ArrayList<RssItem>> rssListener = new Response.Listener<ArrayList<RssItem>>(){
         @Override
         public void onResponse(ArrayList<RssItem> response) {
-            if (mPosition > 1) {
-                mAdapter.remove(loadingItem);
-            }
 
-            RssItem item = new RssItem();
-            item.setRowType(1);
-            item.setCategory(categoryNameList[mPosition]);
-            mAdapter.add(item);
-
-            for (int i = 0; i < 3; i++) {
-                item = response.get(i);
-                mAdapter.add(item);
-            }
-
-            if (mPosition < (categoryNameList.length - 1)) {
-                if (mPosition == 1) {
-                    ProgressLayout.setVisibility(View.GONE);
-                    // add loading view
-                    loadingItem = new RssItem();
-                    loadingItem.setRowType(2);
-                    mAdapter.add(loadingItem);
-                    setListAdapter(mAdapter);
-                } else {
-                    mAdapter.add(loadingItem);
-                }
-
-                mPosition++;
-                getRssData(mPosition);
-            }
-            mAdapter.notifyDataSetChanged();
+            String rssCacheKey = categoryKeyList[mPosition];
+            Gson gson = new Gson();
+            AppData.save(mContext, rssCacheKey, gson.toJson(response));
+            JsonParser parser = new JsonParser();
+            setDataToList(parser.parse(gson.toJson(response)).getAsJsonArray());
         }
     };
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        RssItem item = mAdapter.getItem(position);
-        int rowType = item.getRowType();
+        JsonObject item = mAdapter.getItem(position);
+        int rowType = item.get("rowType").getAsInt();
         if (rowType == 1 || rowType == 2) return;
 
         Intent intent = new Intent(mContext, BkWebViewActivity.class);
-        intent.putExtra(Util.BK_WEBVIEW_URL, item.getLink());
+        intent.putExtra(Util.BK_WEBVIEW_URL, item.get("link").getAsString());
+        intent.putExtra(Util.BK_WEBVIEW_TITLE, item.get("title").getAsString());
         startActivity(intent);
     }
 }

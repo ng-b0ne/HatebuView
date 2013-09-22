@@ -17,5 +17,6 @@ public class Util {
     public static final String CATEGORY_TYPE_ENTRYLIST = "entrylist";
 
     public static final String BK_WEBVIEW_URL = "bk_webview_url";
+    public static final String BK_WEBVIEW_TITLE = "bk_webview_title";
 
 }

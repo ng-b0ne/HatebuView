@@ -4,11 +4,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
+
+import com.google.android.gms.internal.ac;
 
 import me.b0ne.android.hatebuview.R;
 import me.b0ne.android.hatebuview.fragments.BkWebViewFragment;
@@ -23,16 +24,14 @@ public class BkWebViewActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setSupportProgress(50);
-        setSupportProgressBarIndeterminate(true);
         setContentView(R.layout.bk_webview_activity);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         viewUrl = getIntent().getStringExtra(Util.BK_WEBVIEW_URL);
+        actionBar.setTitle(getIntent().getStringExtra(Util.BK_WEBVIEW_TITLE));
+        actionBar.setSubtitle(viewUrl);
 
         BkWebViewFragment webviewFragment = new BkWebViewFragment();
         Bundle args = new Bundle();
@@ -65,7 +64,7 @@ public class BkWebViewActivity extends ActionBarActivity {
                 break;
             case R.id.menu_share:
                 Intent send = new Intent(Intent.ACTION_SEND);
-                send.setType("text/plain");
+                send.setType("text/*");
                 send.putExtra(Intent.EXTRA_TEXT, viewUrl);
                 startActivity(Intent.createChooser(send, "アプリを選択"));
                 break;

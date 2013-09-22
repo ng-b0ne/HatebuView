@@ -22,15 +22,17 @@ public class AppData {
         return context.getSharedPreferences(PREF_APP_KEY, Context.MODE_PRIVATE);
     }
 
-    public static void save(Context context, String key, Gson gson) {
+    public static void save(Context context, String key, String jsonStr) {
         SharedPreferences.Editor editor = getEditor(context);
-        editor.putString(key, gson.toString());
+        editor.putString(key, jsonStr).commit();
     }
 
-    public static Object get(Context context, String key) {
+    public static String get(Context context, String key) {
         String result = getSharedPerf(context).getString(key, null);
-        JsonParser parser = new JsonParser();
-        return parser.parse(result).getAsJsonObject();
+//        Gson gson = new Gson();
+//        gson.toJson(result);
+//        return gson.toJson(result);
+        return result;
     }
 
 }

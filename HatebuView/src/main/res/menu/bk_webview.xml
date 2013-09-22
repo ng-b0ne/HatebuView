@@ -4,15 +4,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:hatebuview="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/menu_to_browser"
-        android:icon="@drawable/ic_menu_copy"
-        android:title="ブラウザで表示"
-        android:showAsAction="always"
-        hatebuview:showAsAction="always" />
-
     <item android:id="@+id/menu_share"
         android:icon="@drawable/ic_menu_share"
         android:title="共有"
         android:showAsAction="always"
-        hatebuview:showAsAction="always" />
+        hatebuview:showAsAction="always|withText" />
+    <item android:id="@+id/menu_to_browser"
+        android:icon="@drawable/ic_menu_copy"
+        android:title="ブラウザで表示"
+        hatebuview:showAsAction="ifRoom|withText" />
+
 </menu>

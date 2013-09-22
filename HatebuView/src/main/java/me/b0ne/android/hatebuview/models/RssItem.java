@@ -3,6 +3,9 @@ package me.b0ne.android.hatebuview.models;
 import android.util.Log;
 
 import com.google.android.gms.internal.fa;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,6 +23,8 @@ public class RssItem {
     private int bookmarkCount;
     private int itemCount;
     private int rowType = 0;
+    private String faviconUrl;
+    private String contentImgUrl;
 
 
     public void setTitle(String _title) {
@@ -40,6 +45,8 @@ public class RssItem {
 
     public void setContent(String _content) {
         this.content = _content;
+        this.setFaviconUrl(_content);
+        this.setContentImgUrl(_content);
     }
 
     public String getContent() {
@@ -96,30 +103,38 @@ public class RssItem {
         return this.rowType;
     }
 
-    public String getFaviconUrl() {
-        String favicon = null;
-        String content = this.content;
+    public void setFaviconUrl(String _content) {
+        this.faviconUrl = "";
         Pattern p = Pattern.compile("<img.+?src=\"((.*)favicon.*?)\".*? />", Pattern.MULTILINE);
-        Matcher m = p.matcher(content);
+        Matcher m = p.matcher(_content);
         while (m.find()) {
             for (int i = 0; i < m.groupCount(); i++) {
-                favicon = m.group(1);
+                this.faviconUrl = m.group(1);
             }
         }
-        return favicon;
     }
 
-    public String getContentImgUrl() {
-        String imgUrl = "";
-        String content = this.content;
+    public String getFaviconUrl() {
+        return this.faviconUrl;
+    }
+
+    public void setContentImgUrl(String _content) {
+        this.contentImgUrl = "";
         Pattern p = Pattern.compile("<img .* src=\"((.*)entryimage.*?)\".*? />", Pattern.MULTILINE);
-        Matcher m = p.matcher(content);
+        Matcher m = p.matcher(_content);
         while (m.find()) {
             for (int i = 0; i < m.groupCount(); i++) {
-                imgUrl = m.group(1);
+                this.contentImgUrl = m.group(1);
             }
         }
-        return imgUrl;
+    }
+    public String getContentImgUrl() {
+        return this.contentImgUrl;
     }
 
+    public JsonObject toJsonObject() {
+        Gson gson = new Gson();
+        JsonParser parser = new JsonParser();
+        return parser.parse(gson.toJson(this)).getAsJsonObject();
+    }
 }
