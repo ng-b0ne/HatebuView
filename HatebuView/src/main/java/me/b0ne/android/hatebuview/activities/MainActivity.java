@@ -137,12 +137,12 @@ public class MainActivity extends ActionBarActivity {
             ArrayAdapter<String> mSpinnerAdapter = new ArrayAdapter<String>(this,
                     R.layout.navigation_mode_list_item, spinnerItems);
             actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-            Log.v("TEST", "set actionbar navi mode");
             actionBar.setListNavigationCallbacks(mSpinnerAdapter, new ActionBar.OnNavigationListener() {
                 @Override
                 public boolean onNavigationItemSelected(int naviPosition, long id) {
                     String type = (naviPosition == 1) ? Util.CATEGORY_TYPE_ENTRYLIST
                             : Util.CATEGORY_TYPE_HOTENTRY;
+                    setActionbarTitleName(item.getName());
                     replaceBookmarkFragment(item, type);
                     return true;
                 }
@@ -166,6 +166,7 @@ public class MainActivity extends ActionBarActivity {
 
     private void setActionbarTitleName(String _title) {
         getSupportActionBar().setTitle(_title);
+        getSupportActionBar().setSubtitle(null);
     }
 
     private void replaceBookmarkFragment(DrawerMenuItem item, String type) {

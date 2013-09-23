@@ -3,6 +3,7 @@ package me.b0ne.android.hatebuview.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -23,7 +24,6 @@ import java.util.ArrayList;
 
 import me.b0ne.android.hatebuview.R;
 import me.b0ne.android.hatebuview.activities.BkWebViewActivity;
-import me.b0ne.android.hatebuview.activities.MainActivity;
 import me.b0ne.android.hatebuview.adapters.BookmarkListAdapter;
 import me.b0ne.android.hatebuview.models.AppData;
 import me.b0ne.android.hatebuview.models.HateBook;
@@ -41,6 +41,8 @@ public class BookmarkListFragment extends ListFragment {
 
     private String rssCacheKey;
 
+    private boolean isDualPane;
+
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bookmark_list, container, false);
@@ -53,8 +55,11 @@ public class BookmarkListFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
 
         mContext = getActivity().getApplicationContext();
-        Bundle args = getArguments();
 
+        View webviewFrame = getView().findViewById(R.id.bk_webview_frame);
+        isDualPane = webviewFrame != null && webviewFrame.getVisibility() == View.VISIBLE;
+
+        Bundle args = getArguments();
         rssCacheKey = args.getString(Util.KEY_BK_CATEGORY_KEY)
                 + args.getString(Util.KEY_BK_CATEGORY_TYPE)
                 + Util.getUpdateTime(mContext);
@@ -93,9 +98,28 @@ public class BookmarkListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         JsonObject item = mAdapter.getItem(position);
-        Intent intent = new Intent(mContext, BkWebViewActivity.class);
-        intent.putExtra(Util.BK_WEBVIEW_URL, item.get("link").getAsString());
-        intent.putExtra(Util.BK_WEBVIEW_TITLE, item.get("title").getAsString());
-        startActivity(intent);
+
+        String webviewUrl = item.get("link").getAsString();
+        String webviewTitle = item.get("title").getAsString();
+        if (isDualPane) {
+            ActionBar actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
+            actionBar.setTitle(webviewTitle);
+            actionBar.setSubtitle(webviewTitle);
+
+            BkWebViewFragment webviewFragment = new BkWebViewFragment();
+            Bundle args = new Bundle();
+            args.putString(Util.BK_WEBVIEW_URL, webviewUrl);
+            webviewFragment.setArguments(args);
+
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.bk_webview_frame, webviewFragment).commit();
+        } else {
+            Intent intent = new Intent(mContext, BkWebViewActivity.class);
+            intent.putExtra(Util.BK_WEBVIEW_URL, item.get("link").getAsString());
+            intent.putExtra(Util.BK_WEBVIEW_TITLE, item.get("title").getAsString());
+            startActivity(intent);
+        }
+
     }
 }

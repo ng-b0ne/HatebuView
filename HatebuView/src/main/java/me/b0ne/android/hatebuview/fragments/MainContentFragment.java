@@ -3,7 +3,10 @@ package me.b0ne.android.hatebuview.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -142,9 +145,26 @@ public class MainContentFragment extends ListFragment {
         int rowType = item.get("rowType").getAsInt();
         if (rowType == 1 || rowType == 2) return;
 
-        Intent intent = new Intent(mContext, BkWebViewActivity.class);
-        intent.putExtra(Util.BK_WEBVIEW_URL, item.get("link").getAsString());
-        intent.putExtra(Util.BK_WEBVIEW_TITLE, item.get("title").getAsString());
-        startActivity(intent);
+        String webviewUrl = item.get("link").getAsString();
+        String webviewTitle = item.get("title").getAsString();
+        if (isDualPane) {
+            ActionBar actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
+            actionBar.setTitle(webviewTitle);
+            actionBar.setSubtitle(webviewTitle);
+
+            BkWebViewFragment webviewFragment = new BkWebViewFragment();
+            Bundle args = new Bundle();
+            args.putString(Util.BK_WEBVIEW_URL, webviewUrl);
+            webviewFragment.setArguments(args);
+
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.bk_webview_frame, webviewFragment).commit();
+        } else {
+            Intent intent = new Intent(mContext, BkWebViewActivity.class);
+            intent.putExtra(Util.BK_WEBVIEW_URL, webviewUrl);
+            intent.putExtra(Util.BK_WEBVIEW_TITLE, webviewTitle);
+            startActivity(intent);
+        }
     }
 }
