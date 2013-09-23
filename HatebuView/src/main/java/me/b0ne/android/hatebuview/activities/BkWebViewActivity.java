@@ -28,6 +28,7 @@ public class BkWebViewActivity extends ActionBarActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setIcon(R.drawable.ic_hatebu_white);
 
         viewUrl = getIntent().getStringExtra(Util.BK_WEBVIEW_URL);
         actionBar.setTitle(getIntent().getStringExtra(Util.BK_WEBVIEW_TITLE));
