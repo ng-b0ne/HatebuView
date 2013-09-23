@@ -9,12 +9,12 @@
 
         <PreferenceScreen
             android:key="app_start_page"
-            android:title="起動時の表示カテゴリー"
+            android:title="アプリ起動時に表示するカテゴリー"
             android:summary="ヘッドライン"
             />
         <PreferenceScreen
             android:key="app_cache_period_time"
-            android:title="フィードキャッシュ時間"
+            android:title="フィードのキャッシュ保存期間"
             />
 
     </PreferenceCategory>

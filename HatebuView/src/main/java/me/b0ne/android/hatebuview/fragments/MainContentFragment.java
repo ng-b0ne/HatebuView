@@ -42,6 +42,8 @@ public class MainContentFragment extends ListFragment {
     private String[] categoryKeyList;
     private JsonObject loadingItem;
 
+    private boolean isDualPane;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bookmark_list, container, false);
@@ -59,6 +61,9 @@ public class MainContentFragment extends ListFragment {
         categoryNameList = getResources().getStringArray(R.array.hatebu_category_name);
         categoryHotentryRssList = getResources().getStringArray(R.array.hatebu_category_hotentry_rssurl);
         categoryKeyList = getResources().getStringArray(R.array.hatebu_category_key);
+
+        View webviewFrame = getView().findViewById(R.id.bk_webview_frame);
+        isDualPane = webviewFrame != null && webviewFrame.getVisibility() == View.VISIBLE;
 
         getRssData(1);
     }
