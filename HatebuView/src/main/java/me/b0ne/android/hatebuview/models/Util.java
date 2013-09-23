@@ -27,6 +27,8 @@ public class Util {
     public static final String CACHE_UPDATE_TIME = "cache_update_time";
     public static final String APP_START_PAGE_TYPE = "start_page_type";
 
+    public static final String KEY_NOW_SHOW_WEBVIEW_URL = "now_show_webview_url";
+
     public static final int DEFAULT_CACHE_PERIOD_TIME = 1800; // 30分
     public static final int CACHE_PERIOD_HALF_HOUR = 1800;
     public static final int CACHE_PERIOD_TIME_1HOUR = 3600;

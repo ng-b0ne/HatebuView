@@ -2,6 +2,7 @@ package me.b0ne.android.hatebuview.activities;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
@@ -21,6 +22,7 @@ import me.b0ne.android.hatebuview.R;
 import me.b0ne.android.hatebuview.adapters.DrawerMenuListAdapter;
 import me.b0ne.android.hatebuview.fragments.BookmarkListFragment;
 import me.b0ne.android.hatebuview.fragments.MainContentFragment;
+import me.b0ne.android.hatebuview.models.AppData;
 import me.b0ne.android.hatebuview.models.DrawerMenuItem;
 import me.b0ne.android.hatebuview.models.Util;
 
@@ -204,15 +206,48 @@ public class MainActivity extends ActionBarActivity {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
+        String viewUrl = AppData.get(this, Util.KEY_NOW_SHOW_WEBVIEW_URL);
+        Intent intent;
 
         switch (item.getItemId()) {
             case R.id.action_settings:
-                Intent intent = new Intent(getApplicationContext(), AppPreferenceActivity.class);
+                intent = new Intent(getApplicationContext(), AppPreferenceActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.menu_to_browser:
+                Uri uri = Uri.parse(viewUrl);
+                intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+                break;
+            case R.id.menu_share:
+                intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/*");
+                intent.putExtra(Intent.EXTRA_TEXT, viewUrl);
+                startActivity(Intent.createChooser(intent, "アプリを選択"));
                 break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem menuToBrowser =  menu.findItem(R.id.menu_to_browser);
+        MenuItem menuShare =  menu.findItem(R.id.menu_share);
+        View webviewFrame = findViewById(R.id.bk_webview_frame);
+        View webviewLayout = findViewById(R.id.webview);
+        boolean isDualPaneWebview = webviewFrame != null
+                && webviewLayout != null
+                && webviewFrame.getVisibility() == View.VISIBLE;
+        if (isDualPaneWebview) {
+            menuToBrowser.setVisible(true);
+            menuShare.setVisible(true);
+        } else {
+            menuToBrowser.setVisible(false);
+            menuShare.setVisible(false);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override

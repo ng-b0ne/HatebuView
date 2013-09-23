@@ -12,6 +12,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import me.b0ne.android.hatebuview.R;
+import me.b0ne.android.hatebuview.models.AppData;
 import me.b0ne.android.hatebuview.models.Util;
 
 /**
@@ -65,6 +66,9 @@ public class BkWebViewFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         String viewUrl = getArguments().getString(Util.BK_WEBVIEW_URL);
+        AppData.save(getActivity().getApplicationContext(),
+                Util.KEY_NOW_SHOW_WEBVIEW_URL,
+                viewUrl);
 
         mWebView.loadUrl(viewUrl);
     }
