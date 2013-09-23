@@ -30,6 +30,7 @@ public class MainActivity extends ActionBarActivity {
     private ListView mDrawerList;
     private DrawerMenuListAdapter mDrawerListAdapter;
     private Button appSettingBtn;
+    private int mDrawerNow = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,11 +93,30 @@ public class MainActivity extends ActionBarActivity {
         // アプリ起動時の表示
         if (savedInstanceState == null) {
             selectItem(Util.getStartPageType(this));
+        } else {
+            selectItem(mDrawerNow);
         }
 
     }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+//        Log.v("TEST", "onSaveInstanceState");
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+//        Log.v("TEST", "onRestoreInstanceState");
+    }
 
     private void selectItem(final int position) {
+        if (mDrawerNow == position) {
+            mDrawerLayout.closeDrawers();
+            return;
+        }
+        mDrawerNow = position;
+
         final DrawerMenuItem item = mDrawerListAdapter.getItem(position);
 
         mDrawerList.setItemChecked(position, true);
@@ -135,7 +155,7 @@ public class MainActivity extends ActionBarActivity {
         mDrawerLayout.closeDrawers();
     }
 
-    private void replaceBookmarkFragment(DrawerMenuItem item, String type) {
+    public void replaceBookmarkFragment(DrawerMenuItem item, String type) {
         if (type == null || type.equals("")) {
             type = Util.CATEGORY_TYPE_HOTENTRY;
         }
@@ -149,6 +169,7 @@ public class MainActivity extends ActionBarActivity {
         args.putString(Util.KEY_BK_CATEGORY_NAME, item.getName());
         args.putString(Util.KEY_BK_CATEGORY_KEY, item.getKey());
         args.putString(Util.KEY_BK_CATEGORY_TYPE, type);
+        args.putInt(Util.KEY_DRAWER_POSITION, mDrawerNow);
         bookmarkListFragment.setArguments(args);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -168,6 +189,13 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
+        }
+
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent intent = new Intent(getApplicationContext(), AppPreferenceActivity.class);
+                startActivity(intent);
+                break;
         }
 
         return super.onOptionsItemSelected(item);

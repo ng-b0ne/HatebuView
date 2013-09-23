@@ -4,15 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.android.volley.Response;
-import com.google.android.gms.internal.bu;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 
 import me.b0ne.android.hatebuview.R;
 import me.b0ne.android.hatebuview.activities.BkWebViewActivity;
+import me.b0ne.android.hatebuview.activities.MainActivity;
 import me.b0ne.android.hatebuview.adapters.BookmarkListAdapter;
 import me.b0ne.android.hatebuview.models.AppData;
 import me.b0ne.android.hatebuview.models.HateBook;

@@ -10,6 +10,8 @@ import me.b0ne.android.hatebuview.R;
  */
 public class Util {
 
+    public static final String KEY_DRAWER_POSITION = "drawer_position";
+
     public static final String KEY_BK_RSS_URL = "rss_url";
     public static final String KEY_BK_CATEGORY_KEY = "category_key";
     public static final String KEY_BK_CATEGORY_NAME = "category_name";
