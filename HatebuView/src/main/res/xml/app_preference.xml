@@ -1,5 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="アプリの設定">
+
+    <PreferenceCategory
+        android:title="一般">
+
+        <PreferenceScreen
+            android:key="app_start_page"
+            android:title="起動時の表示カテゴリー"
+            android:summary="ヘッドライン"
+            />
+        <PreferenceScreen
+            android:key="app_cache_period_time"
+            android:title="フィードキャッシュ時間"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="アプリについて">
+
+        <PreferenceScreen
+            android:key="app_version"
+            android:title="アプリのバージョン"
+            />
+        <PreferenceScreen
+            android:key="app_evaluate"
+            android:title="このアプリを評価する"
+            android:summary="Google Playへアクセスする"
+            />
+    </PreferenceCategory>
 
 </PreferenceScreen>

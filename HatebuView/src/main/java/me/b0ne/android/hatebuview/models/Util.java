@@ -1,6 +1,9 @@
 package me.b0ne.android.hatebuview.models;
 
 import android.content.Context;
+import android.util.Log;
+
+import me.b0ne.android.hatebuview.R;
 
 /**
  * Created by bone on 13/09/15.
@@ -20,8 +23,15 @@ public class Util {
 
     public static final String CACHE_PERIOD_TIME = "cache_period_time";
     public static final String CACHE_UPDATE_TIME = "cache_update_time";
+    public static final String APP_START_PAGE_TYPE = "start_page_type";
 
     public static final int DEFAULT_CACHE_PERIOD_TIME = 1800; // 30分
+    public static final int CACHE_PERIOD_HALF_HOUR = 1800;
+    public static final int CACHE_PERIOD_TIME_1HOUR = 3600;
+    public static final int CACHE_PERIOD_TIME_2HOURS = 3600 * 2;
+    public static final int CACHE_PERIOD_TIME_3HOURS = 3600 * 3;
+    public static final int CACHE_PERIOD_TIME_4HOURS = 3600 * 4;
+    public static final int CACHE_PERIOD_TIME_5HOURS = 3600 * 5;
 
     public static String getUpdateTime(Context context) {
         // now time
@@ -78,4 +88,26 @@ public class Util {
         return period;
     }
 
+    /**
+     * アプリ起動時の表示するカテゴリーのindexを設定する
+     * @param context
+     * @param _typeIndex
+     */
+    public static void setStartPageType(Context context, String _typeIndex) {
+        AppData.save(context, APP_START_PAGE_TYPE, _typeIndex);
+    }
+
+    /**
+     * アプリ起動時の表示するカテゴリーのindexを取得する
+     * @return
+     */
+    public static int getStartPageType(Context context) {
+        String startPageType = AppData.get(context, APP_START_PAGE_TYPE);
+        if (startPageType == null) {
+            String[] bkCategoryKey = context.getResources().getStringArray(R.array.hatebu_category_key);
+            setStartPageType(context, "0");
+            return 0;
+        }
+        return Integer.valueOf(startPageType);
+    }
 }

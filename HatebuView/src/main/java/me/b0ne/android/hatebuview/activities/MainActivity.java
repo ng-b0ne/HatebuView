@@ -89,8 +89,9 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
+        // アプリ起動時の表示
         if (savedInstanceState == null) {
-            selectItem(0);
+            selectItem(Util.getStartPageType(this));
         }
 
     }

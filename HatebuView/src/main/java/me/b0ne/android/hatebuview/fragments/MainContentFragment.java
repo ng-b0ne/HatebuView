@@ -65,17 +65,16 @@ public class MainContentFragment extends ListFragment {
 
     private void getRssData(int position) {
         mPosition = position;
+        // カテゴリー、タイプ別のキャッシュキーを作る
         String rssCacheKey = categoryKeyList[position]
                 + Util.CATEGORY_TYPE_HOTENTRY
                 + Util.getUpdateTime(mContext);
-        String nowTime = String.valueOf(System.currentTimeMillis() / 1000);
-        Log.v("TEST", "upd time = " + Util.getUpdateTime(mContext));
-        Log.v("TEST", "now time = " + nowTime);
 
+        // キャッシュがあったら
         if (AppData.get(mContext, rssCacheKey) != null) {
             JsonParser parser = new JsonParser();
             setDataToList(parser.parse(AppData.get(mContext, rssCacheKey)).getAsJsonArray());
-        } else {
+        } else { // キャッシュがなかったらリクエストする
             HateBook.getRss(mContext, categoryHotentryRssList[position], rssListener);
         }
     }
