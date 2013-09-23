@@ -11,20 +11,20 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 
 import me.b0ne.android.hatebuview.R;
 import me.b0ne.android.hatebuview.models.BitmapCache;
-import me.b0ne.android.hatebuview.models.RssItem;
 
 /**
  * Created by bone on 13/09/17.
  */
-public class BookmarkListAdapter extends ArrayAdapter<RssItem> {
+public class BookmarkListAdapter extends ArrayAdapter<JsonObject> {
     private ImageLoader mImageLoader;
 
-    public BookmarkListAdapter(Context context, ArrayList<RssItem> objects) {
+    public BookmarkListAdapter(Context context, ArrayList<JsonObject> objects) {
         super(context, 0, objects);
         RequestQueue queue = Volley.newRequestQueue(context);
         mImageLoader = new ImageLoader(queue, new BitmapCache());
@@ -45,18 +45,18 @@ public class BookmarkListAdapter extends ArrayAdapter<RssItem> {
 //            view = LayoutInflater.from(getContext()).inflate(R.layout.bookmark_row_full, null);
         }
 
-        final RssItem item = getItem(position);
+        JsonObject item = getItem(position);
         TextView titleView = (TextView)view.findViewById(R.id.title);
         TextView dateView = (TextView)view.findViewById(R.id.datetime);
         TextView bkCountView = (TextView)view.findViewById(R.id.bookmark_count);
         // Log.v("TEST", item.getContentImgUrl());
 
-        titleView.setText(item.getTitle());
-        dateView.setText(item.getDate());
-        bkCountView.setText(item.getBookmarkCount() + " users");
+        titleView.setText(item.get("title").getAsString());
+        dateView.setText(item.get("date").getAsString());
+        bkCountView.setText(item.get("bookmarkCount").getAsString() + " users");
 
         NetworkImageView faviconView = (NetworkImageView)view.findViewById(R.id.site_favicon);
-        faviconView.setImageUrl(item.getFaviconUrl(), mImageLoader);
+        faviconView.setImageUrl(item.get("faviconUrl").getAsString(), mImageLoader);
         return view;
     }
 }

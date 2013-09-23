@@ -42,8 +42,6 @@ public class MainContentFragment extends ListFragment {
     private String[] categoryKeyList;
     private JsonObject loadingItem;
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bookmark_list, container, false);
@@ -67,7 +65,12 @@ public class MainContentFragment extends ListFragment {
 
     private void getRssData(int position) {
         mPosition = position;
-        String rssCacheKey = categoryKeyList[position];
+        String rssCacheKey = categoryKeyList[position]
+                + Util.CATEGORY_TYPE_HOTENTRY
+                + Util.getUpdateTime(mContext);
+        String nowTime = String.valueOf(System.currentTimeMillis() / 1000);
+        Log.v("TEST", "upd time = " + Util.getUpdateTime(mContext));
+        Log.v("TEST", "now time = " + nowTime);
 
         if (AppData.get(mContext, rssCacheKey) != null) {
             JsonParser parser = new JsonParser();
@@ -119,7 +122,9 @@ public class MainContentFragment extends ListFragment {
         @Override
         public void onResponse(ArrayList<RssItem> response) {
 
-            String rssCacheKey = categoryKeyList[mPosition];
+            String rssCacheKey = categoryKeyList[mPosition]
+                    + Util.CATEGORY_TYPE_HOTENTRY
+                    + Util.getUpdateTime(mContext);
             Gson gson = new Gson();
             AppData.save(mContext, rssCacheKey, gson.toJson(response));
             JsonParser parser = new JsonParser();
