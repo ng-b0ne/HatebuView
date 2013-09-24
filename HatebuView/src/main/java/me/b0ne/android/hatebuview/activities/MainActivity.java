@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +16,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.Tracker;
 
 import me.b0ne.android.hatebuview.R;
 import me.b0ne.android.hatebuview.adapters.DrawerMenuListAdapter;
@@ -34,10 +36,16 @@ public class MainActivity extends ActionBarActivity {
     private Button appSettingBtn;
     private int mDrawerNow = 200;
 
+    private Tracker mGaTracker;
+    private GoogleAnalytics mGaInstance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mGaInstance = GoogleAnalytics.getInstance(this);
+        mGaTracker = mGaInstance.getTracker(getResources().getString(R.string.ga_tracking_id));
 
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
@@ -158,6 +166,7 @@ public class MainActivity extends ActionBarActivity {
         if (position > 0) {
             replaceBookmarkFragment(item, null);
         } else {
+            analyticsTrack(mDrawerNow, null);
             MainContentFragment mainContentFragment = new MainContentFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
@@ -177,6 +186,12 @@ public class MainActivity extends ActionBarActivity {
         if (type == null || type.equals("")) {
             type = Util.CATEGORY_TYPE_HOTENTRY;
         }
+        if (mDrawerNow > 2) {
+            analyticsTrack(mDrawerNow, type);
+        } else {
+            analyticsTrack(mDrawerNow, null);
+        }
+
         Bundle args = new Bundle();
         BookmarkListFragment bookmarkListFragment = new BookmarkListFragment();
         if (type.endsWith(Util.CATEGORY_TYPE_HOTENTRY)) {
@@ -264,5 +279,14 @@ public class MainActivity extends ActionBarActivity {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    private void analyticsTrack(int position, String type) {
+        String[] bkCategoryKey = getResources().getStringArray(R.array.hatebu_category_key);
+        if (type == null) {
+            mGaTracker.sendView("/" + bkCategoryKey[position]);
+        } else {
+            mGaTracker.sendView("/" + bkCategoryKey[position] + "/" + type);
+        }
     }
 }

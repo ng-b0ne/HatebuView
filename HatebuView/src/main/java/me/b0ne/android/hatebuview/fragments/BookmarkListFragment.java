@@ -10,7 +10,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -40,6 +39,7 @@ public class BookmarkListFragment extends ListFragment {
     private LinearLayout ProgressLayout;
 
     private String rssCacheKey;
+    private String rssCategoryTypeKey;
 
     private boolean isDualPane;
 
@@ -60,8 +60,9 @@ public class BookmarkListFragment extends ListFragment {
         isDualPane = webviewFrame != null && webviewFrame.getVisibility() == View.VISIBLE;
 
         Bundle args = getArguments();
+        rssCategoryTypeKey = args.getString(Util.KEY_BK_CATEGORY_TYPE);
         rssCacheKey = args.getString(Util.KEY_BK_CATEGORY_KEY)
-                + args.getString(Util.KEY_BK_CATEGORY_TYPE)
+                + rssCategoryTypeKey
                 + Util.getUpdateTime(mContext);
         String rssUrl = args.getString(Util.KEY_BK_RSS_URL);
 
@@ -104,11 +105,12 @@ public class BookmarkListFragment extends ListFragment {
         if (isDualPane) {
             ActionBar actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
             actionBar.setTitle(webviewTitle);
-            actionBar.setSubtitle(webviewTitle);
+            actionBar.setSubtitle(webviewUrl);
 
             BkWebViewFragment webviewFragment = new BkWebViewFragment();
             Bundle args = new Bundle();
             args.putString(Util.BK_WEBVIEW_URL, webviewUrl);
+            args.putString(Util.KEY_BK_CATEGORY_KEY, rssCategoryTypeKey);
             webviewFragment.setArguments(args);
 
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -118,6 +120,7 @@ public class BookmarkListFragment extends ListFragment {
             Intent intent = new Intent(mContext, BkWebViewActivity.class);
             intent.putExtra(Util.BK_WEBVIEW_URL, item.get("link").getAsString());
             intent.putExtra(Util.BK_WEBVIEW_TITLE, item.get("title").getAsString());
+            intent.putExtra(Util.KEY_BK_CATEGORY_KEY, rssCategoryTypeKey);
             startActivity(intent);
         }
 

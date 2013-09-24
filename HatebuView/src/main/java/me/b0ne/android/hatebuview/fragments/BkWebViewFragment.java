@@ -11,6 +11,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.Tracker;
+
 import me.b0ne.android.hatebuview.R;
 import me.b0ne.android.hatebuview.models.AppData;
 import me.b0ne.android.hatebuview.models.Util;
@@ -22,6 +25,9 @@ public class BkWebViewFragment extends Fragment {
 
     private WebView mWebView;
     private ProgressBar loadProgressBar;
+
+    private Tracker mGaTracker;
+    private GoogleAnalytics mGaInstance;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,6 +71,16 @@ public class BkWebViewFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        mGaInstance = GoogleAnalytics.getInstance(getActivity().getApplicationContext());
+        mGaTracker = mGaInstance.getTracker(getResources().getString(R.string.ga_tracking_id));
+        String categoryTypeKey = getArguments().getString(Util.KEY_BK_CATEGORY_KEY);
+        if (categoryTypeKey != null) {
+            mGaTracker.sendView("/" + categoryTypeKey + "/webview");
+        } else {
+            mGaTracker.sendView("/webview");
+        }
+
         String viewUrl = getArguments().getString(Util.BK_WEBVIEW_URL);
         AppData.save(getActivity().getApplicationContext(),
                 Util.KEY_NOW_SHOW_WEBVIEW_URL,

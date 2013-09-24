@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">HatebuView</string>
+    <string name="app_name">はてブ・ビュー</string>
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+
+    <string name="ga_tracking_id">UA-44254434-1</string>
 
     <!-- カテゴリー -->
     <string-array name="hatebu_category_key">

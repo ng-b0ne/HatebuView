@@ -47,6 +47,8 @@ public class MainContentFragment extends ListFragment {
 
     private boolean isDualPane;
 
+    private String rssCategoryTypeKey;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bookmark_list, container, false);
@@ -150,7 +152,7 @@ public class MainContentFragment extends ListFragment {
         if (isDualPane) {
             ActionBar actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
             actionBar.setTitle(webviewTitle);
-            actionBar.setSubtitle(webviewTitle);
+            actionBar.setSubtitle(webviewUrl);
 
             BkWebViewFragment webviewFragment = new BkWebViewFragment();
             Bundle args = new Bundle();

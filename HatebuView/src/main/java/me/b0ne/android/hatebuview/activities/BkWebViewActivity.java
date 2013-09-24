@@ -21,6 +21,8 @@ import me.b0ne.android.hatebuview.models.Util;
 public class BkWebViewActivity extends ActionBarActivity {
 
     private String viewUrl;
+    private String categoryTypeKey;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,9 +36,12 @@ public class BkWebViewActivity extends ActionBarActivity {
         actionBar.setTitle(getIntent().getStringExtra(Util.BK_WEBVIEW_TITLE));
         actionBar.setSubtitle(viewUrl);
 
+        categoryTypeKey = getIntent().getStringExtra(Util.KEY_BK_CATEGORY_KEY);
+
         BkWebViewFragment webviewFragment = new BkWebViewFragment();
         Bundle args = new Bundle();
         args.putString(Util.BK_WEBVIEW_URL, viewUrl);
+        args.putString(Util.KEY_BK_CATEGORY_KEY, categoryTypeKey);
         webviewFragment.setArguments(args);
 
         FragmentManager fragmentManager = getSupportFragmentManager();

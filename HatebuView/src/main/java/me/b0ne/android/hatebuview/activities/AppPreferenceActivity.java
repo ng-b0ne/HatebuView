@@ -11,6 +11,9 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.Tracker;
+
 import me.b0ne.android.hatebuview.R;
 import me.b0ne.android.hatebuview.models.Util;
 
@@ -21,10 +24,18 @@ public class AppPreferenceActivity extends PreferenceActivity {
 
     private PreferenceScreen startPagePref;
     private PreferenceScreen cachePeriodPref;
+
+    private Tracker mGaTracker;
+    private GoogleAnalytics mGaInstance;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.app_preference);
+
+        mGaInstance = GoogleAnalytics.getInstance(this);
+        mGaTracker = mGaInstance.getTracker(getResources().getString(R.string.ga_tracking_id));
+        mGaTracker.sendView("/app-preference");
 
         startPagePref = (PreferenceScreen)findPreference("app_start_page");
         cachePeriodPref = (PreferenceScreen)findPreference("app_cache_period_time");
