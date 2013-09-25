@@ -59,7 +59,7 @@ public class AppPreferenceActivity extends PreferenceActivity {
         appEvaluatePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=me.b0ner.project.app.tobeam");
+                Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=me.b0ne.android.hatebuview");
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
                 return false;

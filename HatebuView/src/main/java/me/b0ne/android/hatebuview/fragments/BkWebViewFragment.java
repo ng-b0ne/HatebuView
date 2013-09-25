@@ -46,6 +46,7 @@ public class BkWebViewFragment extends Fragment {
             }
         };
         mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setBuiltInZoomControls(true);
         mWebView.setWebChromeClient(chromeClient);
         mWebView.setWebViewClient(new WebViewClient(){
             @Override
