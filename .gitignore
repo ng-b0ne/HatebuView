@@ -1,3 +1,4 @@
+.DS_Store
 .classpath
 .project
 .settings
@@ -9,10 +10,10 @@ proguard
 .class
 
 .gradle
+gradlew.bat
 build
 *.iml
 *.ipr
 *.iws
-.idea/
+.idea
 
-libraries

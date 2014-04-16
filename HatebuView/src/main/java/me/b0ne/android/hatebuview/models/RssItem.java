@@ -1,8 +1,5 @@
 package me.b0ne.android.hatebuview.models;
 
-import android.util.Log;
-
-import com.google.android.gms.internal.fa;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
