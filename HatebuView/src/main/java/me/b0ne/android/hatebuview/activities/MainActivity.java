@@ -47,6 +47,13 @@ public class MainActivity extends ActionBarActivity {
         mGaInstance = GoogleAnalytics.getInstance(this);
         mGaTracker = mGaInstance.getTracker(getResources().getString(R.string.ga_tracking_id));
 
+        Intent intent = this.getIntent();
+        Uri uri = intent.getData();
+
+        if (intent.getData() != null) {
+            mGaTracker.setCampaign(uri.getPath());
+        }
+
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeButtonEnabled(true);

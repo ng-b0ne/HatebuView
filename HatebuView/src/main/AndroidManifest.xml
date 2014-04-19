@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="me.b0ne.android.hatebuview"
-    android:versionCode="2"
-    android:versionName="0.1b"
+    android:versionCode="4"
+    android:versionName="0.3a"
     android:installLocation="auto">
 
     <uses-sdk
@@ -38,6 +38,14 @@
             android:icon="@drawable/ic_hatebu_white"
             android:configChanges="keyboardHidden|orientation|screenSize"
             />
+
+        <!-- インストールリファラトラッキングのために使用される-->
+        <service android:name="com.google.analytics.tracking.android.CampaignTrackingService" />
+        <receiver android:name="com.google.analytics.tracking.android.CampaignTrackingReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
