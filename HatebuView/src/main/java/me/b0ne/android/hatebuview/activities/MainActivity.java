@@ -73,9 +73,7 @@ public class MainActivity extends ActionBarActivity {
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Bundle bund = new Bundle();
-                bund.putInt(Util.KEY_DRAWER_POSITION, position);
-                selectItem(bund);
+                selectItem(position);
             }
         });
 
@@ -106,11 +104,11 @@ public class MainActivity extends ActionBarActivity {
 
         // アプリ起動時の表示
         if (savedInstanceState == null) {
-            Bundle bund = new Bundle();
-            bund.putInt(Util.KEY_DRAWER_POSITION, Util.getStartPageType(this));
-            selectItem(bund);
+            selectItem(Util.getStartPageType(this));
         } else {
-            selectItem(savedInstanceState);
+            mDrawerNow = savedInstanceState.getInt(Util.KEY_DRAWER_POSITION,
+                    Util.getStartPageType(this));
+            setActionBarProcess(mDrawerNow);
         }
 
     }
@@ -123,29 +121,43 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         // super.onRestoreInstanceState(savedInstanceState);
-        selectItem(savedInstanceState);
+
+        mDrawerNow = savedInstanceState.getInt(Util.KEY_DRAWER_POSITION,
+                Util.getStartPageType(this));
     }
 
-    private void selectItem(Bundle savedInstanceState) {
-        int position = savedInstanceState.getInt(
-                Util.KEY_DRAWER_POSITION,
-                Util.getStartPageType(this));
+    private void selectItem(int position) {
 
         if (mDrawerNow == position) {
             mDrawerLayout.closeDrawers();
             return;
         }
         mDrawerNow = position;
-
-        final DrawerMenuItem item = mDrawerListAdapter.getItem(position);
-
         mDrawerList.setItemChecked(position, true);
-        setTitle(item.getName());
+        setActionBarProcess(position);
+
+        if (position > 0) {
+            DrawerMenuItem item = mDrawerListAdapter.getItem(position);
+            replaceBookmarkFragment(item, null);
+        } else {
+            analyticsTrack(mDrawerNow, null);
+            MainContentFragment mainContentFragment = new MainContentFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.main_content_frame, mainContentFragment)
+                    .commit();
+        }
+
+        mDrawerLayout.closeDrawers();
+    }
+
+    private void setActionBarProcess(int position) {
+        final DrawerMenuItem item = mDrawerListAdapter.getItem(position);
         ActionBar actionBar = getSupportActionBar();
         setActionbarTitleName(item.getName());
 
         if (position > 2) {
-            String[] spinnerItems = new String[]{"　人気　", "　新規　"};
+            String[] spinnerItems = new String[]{"[ 人気 ]", "[ 新規 ]"};
             ArrayAdapter<String> mSpinnerAdapter = new ArrayAdapter<String>(this,
                     R.layout.navigation_mode_list_item, spinnerItems);
             actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
@@ -162,19 +174,6 @@ public class MainActivity extends ActionBarActivity {
         } else {
             actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         }
-
-        if (position > 0) {
-            replaceBookmarkFragment(item, null);
-        } else {
-            analyticsTrack(mDrawerNow, null);
-            MainContentFragment mainContentFragment = new MainContentFragment();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.main_content_frame, mainContentFragment)
-                    .commit();
-        }
-
-        mDrawerLayout.closeDrawers();
     }
 
     private void setActionbarTitleName(String _title) {

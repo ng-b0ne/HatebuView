@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +16,8 @@ import android.widget.ListView;
 import com.android.volley.Response;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonParser;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
 
@@ -47,8 +46,6 @@ public class MainContentFragment extends ListFragment {
 
     private boolean isDualPane;
 
-    private String rssCategoryTypeKey;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bookmark_list, container, false);
@@ -61,7 +58,6 @@ public class MainContentFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
 
         mContext = getActivity().getApplicationContext();
-        mAdapter = new HeadLineListAdapter(mContext);
 
         categoryNameList = getResources().getStringArray(R.array.hatebu_category_name);
         categoryHotentryRssList = getResources().getStringArray(R.array.hatebu_category_hotentry_rssurl);
@@ -70,7 +66,9 @@ public class MainContentFragment extends ListFragment {
         View webviewFrame = getView().findViewById(R.id.bk_webview_frame);
         isDualPane = webviewFrame != null && webviewFrame.getVisibility() == View.VISIBLE;
 
+        mAdapter = new HeadLineListAdapter(mContext);
         getRssData(1);
+
     }
 
     private void getRssData(int position) {

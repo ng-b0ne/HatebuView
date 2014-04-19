@@ -6,7 +6,8 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
-    <string name="ga_tracking_id">UA-44254434-1</string>
+    <!--<string name="ga_tracking_id">UA-44254434-1</string>-->
+    <string name="ga_tracking_id"></string>
 
     <!-- カテゴリー -->
     <string-array name="hatebu_category_key">
