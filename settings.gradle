@@ -1,1 +1,1 @@
-include ':HatebuView', ':libraries:volley'
+include 'HatebuView'

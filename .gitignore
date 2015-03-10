@@ -2,6 +2,7 @@
 .classpath
 .project
 .settings
+.navigation
 bin
 gen
 project.properties
