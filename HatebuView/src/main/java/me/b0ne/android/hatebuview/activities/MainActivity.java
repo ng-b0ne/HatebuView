@@ -17,9 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.google.analytics.tracking.android.GoogleAnalytics;
-import com.google.analytics.tracking.android.Tracker;
-
 import me.b0ne.android.hatebuview.R;
 import me.b0ne.android.hatebuview.adapters.DrawerMenuListAdapter;
 import me.b0ne.android.hatebuview.fragments.BookmarkListFragment;
@@ -36,23 +33,13 @@ public class MainActivity extends ActionBarActivity {
     private Button appSettingBtn;
     private int mDrawerNow = 200;
 
-    private Tracker mGaTracker;
-    private GoogleAnalytics mGaInstance;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mGaInstance = GoogleAnalytics.getInstance(this);
-        mGaTracker = mGaInstance.getTracker(getResources().getString(R.string.ga_tracking_id));
-
         Intent intent = this.getIntent();
         Uri uri = intent.getData();
-
-        if (intent.getData() != null) {
-            mGaTracker.setCampaign(uri.getPath());
-        }
 
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
@@ -147,7 +134,6 @@ public class MainActivity extends ActionBarActivity {
             DrawerMenuItem item = mDrawerListAdapter.getItem(position);
             replaceBookmarkFragment(item, null);
         } else {
-            analyticsTrack(mDrawerNow, null);
             MainContentFragment mainContentFragment = new MainContentFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
@@ -191,11 +177,6 @@ public class MainActivity extends ActionBarActivity {
     private void replaceBookmarkFragment(DrawerMenuItem item, String type) {
         if (type == null || type.equals("")) {
             type = Util.CATEGORY_TYPE_HOTENTRY;
-        }
-        if (mDrawerNow > 2) {
-            analyticsTrack(mDrawerNow, type);
-        } else {
-            analyticsTrack(mDrawerNow, null);
         }
 
         Bundle args = new Bundle();
@@ -285,14 +266,5 @@ public class MainActivity extends ActionBarActivity {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    private void analyticsTrack(int position, String type) {
-        String[] bkCategoryKey = getResources().getStringArray(R.array.hatebu_category_key);
-        if (type == null) {
-            mGaTracker.sendView("/" + bkCategoryKey[position]);
-        } else {
-            mGaTracker.sendView("/" + bkCategoryKey[position] + "/" + type);
-        }
     }
 }

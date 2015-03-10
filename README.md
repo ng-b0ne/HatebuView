@@ -1,6 +1,7 @@
 # HatebuView 
 
 # Google Play Store
+https://play.google.com/store/apps/details?id=me.b0ne.android.hatebuview
 
 # License
 
