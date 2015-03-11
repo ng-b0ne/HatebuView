@@ -2,5 +2,8 @@
 <resources>
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
+        <item name="colorPrimary">@color/hbv_primary</item>
+        <item name="colorPrimaryDark">@color/hbv_primary_dark</item>
+        <item name="windowActionModeOverlay">true</item>
     </style>
 </resources>
