@@ -1,14 +1,15 @@
 package me.b0ne.android.hatebuview.activities;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,13 +39,15 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+
         Intent intent = this.getIntent();
         Uri uri = intent.getData();
 
-        ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeButtonEnabled(true);
-        actionbar.setIcon(R.drawable.ic_hatebu_white);
+//        ActionBar actionbar = getSupportActionBar();
+//        actionbar.setDisplayHomeAsUpEnabled(true);
+//        actionbar.setHomeButtonEnabled(true);
 
         appSettingBtn = (Button)findViewById(R.id.app_setting);
 
@@ -74,7 +77,6 @@ public class MainActivity extends ActionBarActivity {
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout,
-                R.drawable.ic_drawer,
                 R.string.drawer_open,
                 R.string.drawer_close) {
 
@@ -135,7 +137,7 @@ public class MainActivity extends ActionBarActivity {
             replaceBookmarkFragment(item, null);
         } else {
             MainContentFragment mainContentFragment = new MainContentFragment();
-            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.main_content_frame, mainContentFragment)
                     .commit();
@@ -192,7 +194,7 @@ public class MainActivity extends ActionBarActivity {
         args.putInt(Util.KEY_DRAWER_POSITION, mDrawerNow);
         bookmarkListFragment.setArguments(args);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.main_content_frame, bookmarkListFragment)
                 .commit();

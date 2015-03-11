@@ -1,15 +1,14 @@
 package me.b0ne.android.hatebuview.activities;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.google.android.gms.internal.ac;
+import android.support.v7.widget.Toolbar;
 
 import me.b0ne.android.hatebuview.R;
 import me.b0ne.android.hatebuview.fragments.BkWebViewFragment;
@@ -28,9 +27,10 @@ public class BkWebViewActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bk_webview_activity);
 
+        Toolbar toolbar = (Toolbar)findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setIcon(R.drawable.ic_hatebu_white);
 
         viewUrl = getIntent().getStringExtra(Util.BK_WEBVIEW_URL);
         actionBar.setTitle(getIntent().getStringExtra(Util.BK_WEBVIEW_TITLE));
@@ -44,7 +44,7 @@ public class BkWebViewActivity extends ActionBarActivity {
         args.putString(Util.KEY_BK_CATEGORY_KEY, categoryTypeKey);
         webviewFragment.setArguments(args);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.webview_frame, webviewFragment).commit();
 

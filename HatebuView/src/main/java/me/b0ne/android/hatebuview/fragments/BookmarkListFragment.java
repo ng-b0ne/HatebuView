@@ -3,8 +3,8 @@ package me.b0ne.android.hatebuview.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.ListFragment;
+import android.app.FragmentManager;
+import android.app.ListFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
@@ -113,7 +113,7 @@ public class BookmarkListFragment extends ListFragment {
             args.putString(Util.KEY_BK_CATEGORY_KEY, rssCategoryTypeKey);
             webviewFragment.setArguments(args);
 
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentManager fragmentManager = getActivity().getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.bk_webview_frame, webviewFragment).commit();
         } else {
