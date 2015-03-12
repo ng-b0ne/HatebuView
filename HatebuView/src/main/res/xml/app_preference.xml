@@ -31,6 +31,11 @@
             android:title="このアプリを評価する"
             android:summary="Google Playへアクセスする"
             />
+        <PreferenceScreen
+            android:key="app_source_code"
+            android:title="Source Code"
+            android:summary="ng-b0ne / HatebuView にソースコードを公開してあります"
+            />
     </PreferenceCategory>
 
 </PreferenceScreen>

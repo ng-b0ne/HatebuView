@@ -77,6 +77,18 @@ public class AppPreferenceFragment extends PreferenceFragment {
             }
         });
 
+        // Github
+        PreferenceScreen appSourceCode = (PreferenceScreen)findPreference("app_source_code");
+        appSourceCode.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Uri uri = Uri.parse("https://github.com/ng-b0ne/HatebuView");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+                return false;
+            }
+        });
+
     }
 
     private void showStartPageDialog() {
