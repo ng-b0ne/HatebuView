@@ -10,8 +10,4 @@
         android:title="ブラウザで表示"
         android:visible="false"
         />
-    <item
-        android:id="@+id/action_settings"
-        android:title="アプリの設定"
-        android:showAsAction="never" />
 </menu>

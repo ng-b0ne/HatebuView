@@ -2,4 +2,12 @@
 <resources>
     <color name="hbv_primary">#262626</color>
     <color name="hbv_primary_dark">#1C1C1C</color>
+
+    <color name="default_text">#292929</color>
+    <color name="default_summary_text">#595959</color>
+
+    <color name="gray_ccc">#CCC</color>
+    <color name="gray_999">#999</color>
+    <color name="gray_666">#666</color>
+    <color name="gray_333">#333</color>
 </resources>

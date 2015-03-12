@@ -6,22 +6,15 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
 
 import me.b0ne.android.hatebuview.R;
-import me.b0ne.android.hatebuview.adapters.DrawerMenuListAdapter;
 import me.b0ne.android.hatebuview.fragments.BookmarkListFragment;
-import me.b0ne.android.hatebuview.fragments.MainContentFragment;
 import me.b0ne.android.hatebuview.models.AppData;
 import me.b0ne.android.hatebuview.models.DrawerMenuItem;
 import me.b0ne.android.hatebuview.models.Util;
@@ -29,9 +22,9 @@ import me.b0ne.android.hatebuview.models.Util;
 public class MainActivity extends ActionBarActivity {
     public DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
-    private ListView mDrawerList;
-    private DrawerMenuListAdapter mDrawerListAdapter;
-    private Button appSettingBtn;
+//    private ListView mDrawerList;
+//    private DrawerMenuListAdapter mDrawerListAdapter;
+//    private Button appSettingBtn;
     private int mDrawerNow = 200;
 
     @Override
@@ -49,10 +42,10 @@ public class MainActivity extends ActionBarActivity {
 //        actionbar.setDisplayHomeAsUpEnabled(true);
 //        actionbar.setHomeButtonEnabled(true);
 
-        appSettingBtn = (Button)findViewById(R.id.app_setting);
+//        appSettingBtn = (Button)findViewById(R.id.app_setting);
 
-        mDrawerList = (ListView)findViewById(R.id.left_drawer);
-        mDrawerListAdapter = new DrawerMenuListAdapter(this);
+//        mDrawerList = (ListView)findViewById(R.id.left_drawer);
+//        mDrawerListAdapter = new DrawerMenuListAdapter(this);
         String[] bkNameList = getResources().getStringArray(R.array.hatebu_category_name);
         String[] bkHotentryUrlList = getResources().getStringArray(R.array.hatebu_category_hotentry_rssurl);
         String[] bkEntrylistUrlList = getResources().getStringArray(R.array.hatebu_category_entrylist_rssurl);
@@ -64,15 +57,15 @@ public class MainActivity extends ActionBarActivity {
             item.setKey(bkCategoryKey[i]);
             item.setHotentryUrl(bkHotentryUrlList[i]);
             item.setEntrylistUrl(bkEntrylistUrlList[i]);
-            mDrawerListAdapter.add(item);
+//            mDrawerListAdapter.add(item);
         }
-        mDrawerList.setAdapter(mDrawerListAdapter);
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                selectItem(position);
-            }
-        });
+//        mDrawerList.setAdapter(mDrawerListAdapter);
+//        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+//                selectItem(position);
+//            }
+//        });
 
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -89,14 +82,14 @@ public class MainActivity extends ActionBarActivity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        appSettingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mDrawerLayout.closeDrawers();
-                Intent intent = new Intent(getApplicationContext(), AppPreferenceActivity.class);
-                startActivity(intent);
-            }
-        });
+//        appSettingBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mDrawerLayout.closeDrawers();
+//                Intent intent = new Intent(getApplicationContext(), AppPreferenceActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         // アプリ起動時の表示
         if (savedInstanceState == null) {
@@ -129,46 +122,46 @@ public class MainActivity extends ActionBarActivity {
             return;
         }
         mDrawerNow = position;
-        mDrawerList.setItemChecked(position, true);
-        setActionBarProcess(position);
-
-        if (position > 0) {
-            DrawerMenuItem item = mDrawerListAdapter.getItem(position);
-            replaceBookmarkFragment(item, null);
-        } else {
-            MainContentFragment mainContentFragment = new MainContentFragment();
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.main_content_frame, mainContentFragment)
-                    .commit();
-        }
+//        mDrawerList.setItemChecked(position, true);
+//        setActionBarProcess(position);
+//
+//        if (position > 0) {
+//            DrawerMenuItem item = mDrawerListAdapter.getItem(position);
+//            replaceBookmarkFragment(item, null);
+//        } else {
+//            MainContentFragment mainContentFragment = new MainContentFragment();
+//            FragmentManager fragmentManager = getFragmentManager();
+//            fragmentManager.beginTransaction()
+//                    .replace(R.id.main_content_frame, mainContentFragment)
+//                    .commit();
+//        }
 
         mDrawerLayout.closeDrawers();
     }
 
     private void setActionBarProcess(int position) {
-        final DrawerMenuItem item = mDrawerListAdapter.getItem(position);
-        ActionBar actionBar = getSupportActionBar();
-        setActionbarTitleName(item.getName());
-
-        if (position > 2) {
-            String[] spinnerItems = new String[]{"[ 人気 ]", "[ 新規 ]"};
-            ArrayAdapter<String> mSpinnerAdapter = new ArrayAdapter<String>(this,
-                    R.layout.navigation_mode_list_item, spinnerItems);
-            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-            actionBar.setListNavigationCallbacks(mSpinnerAdapter, new ActionBar.OnNavigationListener() {
-                @Override
-                public boolean onNavigationItemSelected(int naviPosition, long id) {
-                    String type = (naviPosition == 1) ? Util.CATEGORY_TYPE_ENTRYLIST
-                            : Util.CATEGORY_TYPE_HOTENTRY;
-                    setActionbarTitleName(item.getName());
-                    replaceBookmarkFragment(item, type);
-                    return true;
-                }
-            });
-        } else {
-            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        }
+//        final DrawerMenuItem item = mDrawerListAdapter.getItem(position);
+//        ActionBar actionBar = getSupportActionBar();
+//        setActionbarTitleName(item.getName());
+//
+//        if (position > 2) {
+//            String[] spinnerItems = new String[]{"[ 人気 ]", "[ 新規 ]"};
+//            ArrayAdapter<String> mSpinnerAdapter = new ArrayAdapter<String>(this,
+//                    R.layout.navigation_mode_list_item, spinnerItems);
+//            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+//            actionBar.setListNavigationCallbacks(mSpinnerAdapter, new ActionBar.OnNavigationListener() {
+//                @Override
+//                public boolean onNavigationItemSelected(int naviPosition, long id) {
+//                    String type = (naviPosition == 1) ? Util.CATEGORY_TYPE_ENTRYLIST
+//                            : Util.CATEGORY_TYPE_HOTENTRY;
+//                    setActionbarTitleName(item.getName());
+//                    replaceBookmarkFragment(item, type);
+//                    return true;
+//                }
+//            });
+//        } else {
+//            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+//        }
     }
 
     private void setActionbarTitleName(String _title) {
@@ -216,10 +209,6 @@ public class MainActivity extends ActionBarActivity {
         Intent intent;
 
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                intent = new Intent(getApplicationContext(), AppPreferenceActivity.class);
-                startActivity(intent);
-                break;
             case R.id.menu_to_browser:
                 Uri uri = Uri.parse(viewUrl);
                 intent = new Intent(Intent.ACTION_VIEW, uri);

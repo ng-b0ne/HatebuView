@@ -31,42 +31,44 @@
 
         <!-- drawer content -->
         <LinearLayout
+            android:id="@+id/drawer_menu_item_layout"
             android:orientation="vertical"
             android:layout_width="240dp"
             android:layout_height="match_parent"
             android:layout_gravity="left"
             android:background="#EBEBEB">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                >
-                <ListView
-                    android:id="@+id/left_drawer"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="left"
-                    android:choiceMode="singleChoice"
-                    android:scrollingCache="false"
-                    android:fadingEdge="none"
-                    />
-            </LinearLayout>
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:orientation="vertical"-->
+                <!-->-->
+                <!--<ListView-->
+                    <!--android:id="@+id/left_drawer"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_gravity="left"-->
+                    <!--android:choiceMode="singleChoice"-->
+                    <!--android:scrollingCache="false"-->
+                    <!--android:fadingEdge="none"-->
+                    <!--/>-->
+            <!--</LinearLayout>-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
-                <Button
-                    android:id="@+id/app_setting"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="アプリの設定"
-                    />
-            </LinearLayout>
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="vertical"-->
+                <!-->-->
+                <!--<Button-->
+                    <!--android:id="@+id/app_setting"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:gravity="center"-->
+                    <!--android:text="アプリの設定"-->
+                    <!--/>-->
+            <!--</LinearLayout>-->
+            <include layout="@layout/drawer_menu_layout" />
 
         </LinearLayout>
 
