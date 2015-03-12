@@ -6,15 +6,16 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 
 import me.b0ne.android.hatebuview.R;
 import me.b0ne.android.hatebuview.fragments.BookmarkListFragment;
@@ -23,8 +24,11 @@ import me.b0ne.android.hatebuview.models.AppData;
 import me.b0ne.android.hatebuview.models.Util;
 
 public class MainActivity extends ActionBarActivity {
+
     public DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+    private Toolbar mToolbar;
+    private Spinner mToolbarSpinner;
 
     private String[] mBkNameList;
     private String[] mBkHotentryUrlList;
@@ -62,8 +66,9 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.tool_bar);
+        mToolbarSpinner = (Spinner) mToolbar.findViewById(R.id.tool_bar_spinner);
+        setSupportActionBar(mToolbar);
 
         mDrawerHeadline = (LinearLayout)findViewById(R.id.drawer_item_headline);
         mDrawerHotentry = (LinearLayout)findViewById(R.id.drawer_item_hotentry);
@@ -203,26 +208,31 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void setActionBarProcess(final int position) {
-        ActionBar actionBar = getSupportActionBar();
         setActionbarTitleName(mBkNameList[position]);
 
         if (position > 2) {
-            String[] spinnerItems = new String[]{"[ 人気 ]", "[ 新規 ]"};
+            String[] spinnerItems = new String[]{" 人気 ", " 新規 "};
             ArrayAdapter<String> mSpinnerAdapter = new ArrayAdapter<String>(this,
                     R.layout.navigation_mode_list_item, spinnerItems);
-            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-            actionBar.setListNavigationCallbacks(mSpinnerAdapter, new ActionBar.OnNavigationListener() {
+
+            mToolbarSpinner.setVisibility(View.VISIBLE);
+            mToolbarSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
-                public boolean onNavigationItemSelected(int naviPosition, long id) {
-                    String type = (naviPosition == 1) ? Util.CATEGORY_TYPE_ENTRYLIST
+                public void onItemSelected(AdapterView<?> parent, View view, int spinnerPosition, long id) {
+                    // 処理
+                    String type = (spinnerPosition == 1) ? Util.CATEGORY_TYPE_ENTRYLIST
                             : Util.CATEGORY_TYPE_HOTENTRY;
                     setActionbarTitleName(mBkNameList[position]);
                     replaceBookmarkFragment(position, type);
-                    return true;
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
                 }
             });
+            mToolbarSpinner.setAdapter(mSpinnerAdapter);
         } else {
-            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+            mToolbarSpinner.setVisibility(View.GONE);
         }
     }
 
