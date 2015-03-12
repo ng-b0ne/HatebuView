@@ -25,7 +25,7 @@ import me.b0ne.android.hatebuview.models.Util;
 
 public class MainActivity extends ActionBarActivity {
 
-    public DrawerLayout mDrawerLayout;
+    private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private Toolbar mToolbar;
     private Spinner mToolbarSpinner;
