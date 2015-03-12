@@ -6,26 +6,56 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 
 import me.b0ne.android.hatebuview.R;
 import me.b0ne.android.hatebuview.fragments.BookmarkListFragment;
+import me.b0ne.android.hatebuview.fragments.MainContentFragment;
 import me.b0ne.android.hatebuview.models.AppData;
-import me.b0ne.android.hatebuview.models.DrawerMenuItem;
 import me.b0ne.android.hatebuview.models.Util;
 
 public class MainActivity extends ActionBarActivity {
     public DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
-//    private ListView mDrawerList;
-//    private DrawerMenuListAdapter mDrawerListAdapter;
-//    private Button appSettingBtn;
+
+    private String[] mBkNameList;
+    private String[] mBkHotentryUrlList;
+    private String[] mBkEntryUrlList;
+    private String[] mBkCategoryKey;
     private int mDrawerNow = 200;
+
+    private static final int DRAWER_TYPE_HEADLINE = 0;
+    private static final int DRAWER_TYPE_HOTENTRY = 1;
+    private static final int DRAWER_TYPE_ENTRYLIST = 2;
+    private static final int DRAWER_TYPE_SOCIAL = 3;
+    private static final int DRAWER_TYPE_ECONOMICS = 4;
+    private static final int DRAWER_TYPE_LIFE = 5;
+    private static final int DRAWER_TYPE_IT = 6;
+    private static final int DRAWER_TYPE_ENTERME = 7;
+    private static final int DRAWER_TYPE_GAME = 8;
+    private static final int DRAWER_TYPE_FUN = 9;
+    private static final int DRAWER_TYPE_SETTING = 10;
+
+    private LinearLayout mDrawerHeadline;
+    private LinearLayout mDrawerHotentry;
+    private LinearLayout mDrawerEntrylist;
+    private LinearLayout mDrawerSocial;
+    private LinearLayout mDrawerEconomics;
+    private LinearLayout mDrawerLife;
+    private LinearLayout mDrawerIt;
+    private LinearLayout mDrawerEnterme;
+    private LinearLayout mDrawerGame;
+    private LinearLayout mDrawerFun;
+    private LinearLayout mDrawerSetting;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,37 +65,22 @@ public class MainActivity extends ActionBarActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
-        Intent intent = this.getIntent();
-        Uri uri = intent.getData();
+        mDrawerHeadline = (LinearLayout)findViewById(R.id.drawer_item_headline);
+        mDrawerHotentry = (LinearLayout)findViewById(R.id.drawer_item_hotentry);
+        mDrawerEntrylist = (LinearLayout)findViewById(R.id.drawer_item_entrylist);
+        mDrawerSocial = (LinearLayout)findViewById(R.id.drawer_item_social);
+        mDrawerEconomics = (LinearLayout)findViewById(R.id.drawer_item_economics);
+        mDrawerLife = (LinearLayout)findViewById(R.id.drawer_item_life);
+        mDrawerIt = (LinearLayout)findViewById(R.id.drawer_item_it);
+        mDrawerEnterme = (LinearLayout)findViewById(R.id.drawer_item_enterme);
+        mDrawerGame = (LinearLayout)findViewById(R.id.drawer_item_game);
+        mDrawerFun = (LinearLayout)findViewById(R.id.drawer_item_fun);
+        mDrawerSetting = (LinearLayout)findViewById(R.id.drawer_item_setting);
 
-//        ActionBar actionbar = getSupportActionBar();
-//        actionbar.setDisplayHomeAsUpEnabled(true);
-//        actionbar.setHomeButtonEnabled(true);
-
-//        appSettingBtn = (Button)findViewById(R.id.app_setting);
-
-//        mDrawerList = (ListView)findViewById(R.id.left_drawer);
-//        mDrawerListAdapter = new DrawerMenuListAdapter(this);
-        String[] bkNameList = getResources().getStringArray(R.array.hatebu_category_name);
-        String[] bkHotentryUrlList = getResources().getStringArray(R.array.hatebu_category_hotentry_rssurl);
-        String[] bkEntrylistUrlList = getResources().getStringArray(R.array.hatebu_category_entrylist_rssurl);
-        String[] bkCategoryKey = getResources().getStringArray(R.array.hatebu_category_key);
-        DrawerMenuItem item;
-        for (int i = 0; i < bkNameList.length; i++) {
-            item = new DrawerMenuItem();
-            item.setName(bkNameList[i]);
-            item.setKey(bkCategoryKey[i]);
-            item.setHotentryUrl(bkHotentryUrlList[i]);
-            item.setEntrylistUrl(bkEntrylistUrlList[i]);
-//            mDrawerListAdapter.add(item);
-        }
-//        mDrawerList.setAdapter(mDrawerListAdapter);
-//        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-//                selectItem(position);
-//            }
-//        });
+        mBkNameList = getResources().getStringArray(R.array.hatebu_category_name);
+        mBkHotentryUrlList = getResources().getStringArray(R.array.hatebu_category_hotentry_rssurl);
+        mBkEntryUrlList = getResources().getStringArray(R.array.hatebu_category_entrylist_rssurl);
+        mBkCategoryKey = getResources().getStringArray(R.array.hatebu_category_key);
 
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -82,14 +97,24 @@ public class MainActivity extends ActionBarActivity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-//        appSettingBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mDrawerLayout.closeDrawers();
-//                Intent intent = new Intent(getApplicationContext(), AppPreferenceActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        mDrawerHeadline.setOnClickListener(mDrawerOnClick);
+        mDrawerHotentry.setOnClickListener(mDrawerOnClick);
+        mDrawerEntrylist.setOnClickListener(mDrawerOnClick);
+        mDrawerSocial.setOnClickListener(mDrawerOnClick);
+        mDrawerEconomics.setOnClickListener(mDrawerOnClick);
+        mDrawerLife.setOnClickListener(mDrawerOnClick);
+        mDrawerIt.setOnClickListener(mDrawerOnClick);
+        mDrawerEnterme.setOnClickListener(mDrawerOnClick);
+        mDrawerGame.setOnClickListener(mDrawerOnClick);
+        mDrawerFun.setOnClickListener(mDrawerOnClick);
+        mDrawerSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDrawerLayout.closeDrawers();
+                Intent intent = new Intent(getApplicationContext(), AppPreferenceActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // アプリ起動時の表示
         if (savedInstanceState == null) {
@@ -101,6 +126,45 @@ public class MainActivity extends ActionBarActivity {
         }
 
     }
+
+    private View.OnClickListener mDrawerOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.drawer_item_headline :
+                    selectItem(DRAWER_TYPE_HEADLINE);
+                    break;
+                case R.id.drawer_item_hotentry :
+                    selectItem(DRAWER_TYPE_HOTENTRY);
+                    break;
+                case R.id.drawer_item_entrylist :
+                    selectItem(DRAWER_TYPE_ENTRYLIST);
+                    break;
+                case R.id.drawer_item_social :
+                    selectItem(DRAWER_TYPE_SOCIAL);
+                    break;
+                case R.id.drawer_item_economics :
+                    selectItem(DRAWER_TYPE_ECONOMICS);
+                    break;
+                case R.id.drawer_item_life :
+                    selectItem(DRAWER_TYPE_LIFE);
+                    break;
+                case R.id.drawer_item_it :
+                    selectItem(DRAWER_TYPE_IT);
+                    break;
+                case R.id.drawer_item_enterme :
+                    selectItem(DRAWER_TYPE_ENTERME);
+                    break;
+                case R.id.drawer_item_game :
+                    selectItem(DRAWER_TYPE_GAME);
+                    break;
+                case R.id.drawer_item_fun :
+                    selectItem(DRAWER_TYPE_FUN);
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(Util.KEY_DRAWER_POSITION, mDrawerNow);
@@ -122,46 +186,44 @@ public class MainActivity extends ActionBarActivity {
             return;
         }
         mDrawerNow = position;
-//        mDrawerList.setItemChecked(position, true);
-//        setActionBarProcess(position);
-//
-//        if (position > 0) {
-//            DrawerMenuItem item = mDrawerListAdapter.getItem(position);
-//            replaceBookmarkFragment(item, null);
-//        } else {
-//            MainContentFragment mainContentFragment = new MainContentFragment();
-//            FragmentManager fragmentManager = getFragmentManager();
-//            fragmentManager.beginTransaction()
-//                    .replace(R.id.main_content_frame, mainContentFragment)
-//                    .commit();
-//        }
+        setActionBarProcess(position);
+
+
+        if (position > 0) {
+            replaceBookmarkFragment(position, null);
+        } else {
+            MainContentFragment mainContentFragment = new MainContentFragment();
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.main_content_frame, mainContentFragment)
+                    .commit();
+        }
 
         mDrawerLayout.closeDrawers();
     }
 
-    private void setActionBarProcess(int position) {
-//        final DrawerMenuItem item = mDrawerListAdapter.getItem(position);
-//        ActionBar actionBar = getSupportActionBar();
-//        setActionbarTitleName(item.getName());
-//
-//        if (position > 2) {
-//            String[] spinnerItems = new String[]{"[ 人気 ]", "[ 新規 ]"};
-//            ArrayAdapter<String> mSpinnerAdapter = new ArrayAdapter<String>(this,
-//                    R.layout.navigation_mode_list_item, spinnerItems);
-//            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-//            actionBar.setListNavigationCallbacks(mSpinnerAdapter, new ActionBar.OnNavigationListener() {
-//                @Override
-//                public boolean onNavigationItemSelected(int naviPosition, long id) {
-//                    String type = (naviPosition == 1) ? Util.CATEGORY_TYPE_ENTRYLIST
-//                            : Util.CATEGORY_TYPE_HOTENTRY;
-//                    setActionbarTitleName(item.getName());
-//                    replaceBookmarkFragment(item, type);
-//                    return true;
-//                }
-//            });
-//        } else {
-//            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-//        }
+    private void setActionBarProcess(final int position) {
+        ActionBar actionBar = getSupportActionBar();
+        setActionbarTitleName(mBkNameList[position]);
+
+        if (position > 2) {
+            String[] spinnerItems = new String[]{"[ 人気 ]", "[ 新規 ]"};
+            ArrayAdapter<String> mSpinnerAdapter = new ArrayAdapter<String>(this,
+                    R.layout.navigation_mode_list_item, spinnerItems);
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+            actionBar.setListNavigationCallbacks(mSpinnerAdapter, new ActionBar.OnNavigationListener() {
+                @Override
+                public boolean onNavigationItemSelected(int naviPosition, long id) {
+                    String type = (naviPosition == 1) ? Util.CATEGORY_TYPE_ENTRYLIST
+                            : Util.CATEGORY_TYPE_HOTENTRY;
+                    setActionbarTitleName(mBkNameList[position]);
+                    replaceBookmarkFragment(position, type);
+                    return true;
+                }
+            });
+        } else {
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        }
     }
 
     private void setActionbarTitleName(String _title) {
@@ -169,7 +231,7 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setSubtitle(null);
     }
 
-    private void replaceBookmarkFragment(DrawerMenuItem item, String type) {
+    private void replaceBookmarkFragment(int position, String type) {
         if (type == null || type.equals("")) {
             type = Util.CATEGORY_TYPE_HOTENTRY;
         }
@@ -177,12 +239,12 @@ public class MainActivity extends ActionBarActivity {
         Bundle args = new Bundle();
         BookmarkListFragment bookmarkListFragment = new BookmarkListFragment();
         if (type.endsWith(Util.CATEGORY_TYPE_HOTENTRY)) {
-            args.putString(Util.KEY_BK_RSS_URL, item.getHotentryUrl());
+            args.putString(Util.KEY_BK_RSS_URL, mBkHotentryUrlList[position]);
         } else {
-            args.putString(Util.KEY_BK_RSS_URL, item.getEntrylistUrl());
+            args.putString(Util.KEY_BK_RSS_URL, mBkEntryUrlList[position]);
         }
-        args.putString(Util.KEY_BK_CATEGORY_NAME, item.getName());
-        args.putString(Util.KEY_BK_CATEGORY_KEY, item.getKey());
+        args.putString(Util.KEY_BK_CATEGORY_NAME, mBkNameList[position]);
+        args.putString(Util.KEY_BK_CATEGORY_KEY, mBkCategoryKey[position]);
         args.putString(Util.KEY_BK_CATEGORY_TYPE, type);
         args.putInt(Util.KEY_DRAWER_POSITION, mDrawerNow);
         bookmarkListFragment.setArguments(args);
